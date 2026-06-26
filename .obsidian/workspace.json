@@ -34,19 +34,8 @@
               "icon": "lucide-file",
               "title": "Web Scrapping"
             }
-          },
-          {
-            "id": "8e405fe28e931a79",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -138,12 +127,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Web Scrapping.md",
+                "file": "Reunión Marcos y Diego.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Web Scrapping"
+              "title": "Outgoing links from Reunión Marcos y Diego"
             }
           },
           {
@@ -205,7 +194,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 608.5
+    "width": 608.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -219,10 +209,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "dce3568d05995096",
+  "active": "61e2b372b2d13916",
   "lastOpenFiles": [
-    "Reunión Marcos y Diego.md",
     "Web Scrapping.md",
+    "Reunión Marcos y Diego.md",
     "Welcome.md",
     "Diario/2026-06-24.md",
     "Diario",
