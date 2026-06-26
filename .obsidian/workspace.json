@@ -22,6 +22,26 @@
             }
           },
           {
+            "id": "6ff0bf53a9ab433a",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          },
+          {
+            "id": "4abd81f2b0f8324d",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          },
+          {
             "id": "dce3568d05995096",
             "type": "leaf",
             "state": {
@@ -35,7 +55,8 @@
               "title": "Web Scrapping"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -208,10 +229,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "61e2b372b2d13916",
+  "active": "4abd81f2b0f8324d",
   "lastOpenFiles": [
-    "Reunión Marcos y Diego.md",
+    "VP Services and Consulting SPA/Página Web.md",
+    "VP Services and Consulting SPA",
+    "Fábrica Precios.md",
+    "Marcos - Diego.md",
     "Web Scrapping.md",
+    "Agente Mercado Libre.md",
     "Welcome.md",
     "Diario/2026-06-24.md",
     "Diario",
