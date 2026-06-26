@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Reunión Marcos y Diego.md",
+                "file": "Web Scrapping.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Reunión Marcos y Diego"
+              "title": "Web Scrapping"
             }
           },
           {
@@ -194,8 +194,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 608.5,
-    "collapsed": true
+    "width": 608.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -211,8 +210,8 @@
   },
   "active": "61e2b372b2d13916",
   "lastOpenFiles": [
-    "Web Scrapping.md",
     "Reunión Marcos y Diego.md",
+    "Web Scrapping.md",
     "Welcome.md",
     "Diario/2026-06-24.md",
     "Diario",
