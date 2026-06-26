@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "eacdab1af096c8ed",
+        "id": "5a7bb8d3187cd8d5",
         "type": "tabs",
         "children": [
           {
-            "id": "3224ffb56351ec6d",
+            "id": "1c671b000ffa04c1",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ]
@@ -177,8 +177,28 @@
       "bases:Create new base": false
     }
   },
-  "active": "3224ffb56351ec6d",
+  "active": "1c671b000ffa04c1",
   "lastOpenFiles": [
+    "Diario/2026-06-24.md",
+    "Diario",
+    "🏠 Inicio.md",
+    "Recursos/Plantillas/Sesión Claude.md",
+    "Recursos/Plantillas/Nuevo Proyecto.md",
+    "Recursos/Plantillas/Bug Report.md",
+    "Recursos/Plantillas",
+    "Recursos",
+    "README.md",
+    "Proyectos/BuscaGit/Sesiones/Notas.md",
+    "Proyectos/BuscaGit/Sesiones/2026-06-20.md",
+    "Proyectos/BuscaGit/Sesiones",
+    "Proyectos/BuscaGit/BuscaGit.md",
+    "Proyectos/Index de Proyectos.md",
+    "Proyectos/BuscaGit",
+    "Proyectos",
+    "Personal/Tareas.md",
+    "Personal",
+    "Desarrollo/Snippets y Comandos.md",
+    "Desarrollo",
     "Welcome.md",
     "Prueba Claude.md"
   ]
