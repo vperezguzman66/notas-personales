@@ -1,6 +1,8 @@
 He creado un agente en que permite enviarme un correo cuando baje de precio.
 El link en GitHub es el siguiente: https://github.com/vperezguzman66/price-monitor.git
 
+[[Varios]]
+
 Agente que revisa el precio de un producto en MercadoLibre Chile cada hora y envía un email cuando el precio baja un 10% o más respecto al precio inicial registrado.
 
 ## Como funciona
