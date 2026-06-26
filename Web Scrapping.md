@@ -1,0 +1,2 @@
+
+En reunión con [[Reunión Marcos y Diego]] se generó la necesidad de crear esta aplicación que permita extraer los precios de productos que existen en la competencia, para ello se genero una app que está en el repositorio en GitHub con el link 
