@@ -601,3 +601,44 @@ El CSV debe tener cabeceras en la primera fila. La columna `name` es obligator
 |`purchase_date`|Fecha de compra `YYYY-MM-DD`|
 
 Límites: máximo **2MB** y **10.000 filas** de datos.
+
+---
+title: LicenseControl - Mapa Visual Operativo
+tags: [licensecontrol, roadmap, arquitectura, sam, release]
+project: LicenseControl
+updated: 2026-06-26
+---
+
+# LicenseControl — Mapa Visual Operativo
+
+## Estado general
+
+- RH-01 ✅
+- RH-02 ✅
+- RH-03 ✅
+- RH-04 ✅
+- RH-05 ✅
+- RH-06 ✅
+- RH-07 ✅
+- RH-08 ✅
+
+---
+
+## Roadmap visual (RH-01 → RH-08)
+
+```mermaid
+flowchart LR
+  RH01[RH-01<br/>Electron patch] --> RH02[RH-02<br/>Fix dompurify]
+  RH02 --> RH03[RH-03<br/>Alineación docs]
+  RH03 --> RH04[RH-04<br/>Code splitting]
+  RH04 --> RH05[RH-05<br/>Smoke empaquetado]
+  RH05 --> RH06[RH-06<br/>Step-up + Backup/Restore]
+  RH06 --> RH07[RH-07<br/>Bundle budget gate]
+  RH07 --> RH08[RH-08<br/>Plantilla release evidence]
+
+  classDef done fill:#163,stroke:#3f6,color:#dff;
+  class RH01,RH02,RH03,RH04,RH05,RH06,RH07,RH08 done;
+  
+  
+  
+  
