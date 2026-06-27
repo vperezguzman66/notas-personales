@@ -1,4 +1,9 @@
 [
   "obsidian-local-rest-api",
-  "obsidian-git"
+  "obsidian-git",
+  "infranodus-graph-view",
+  "obsidian-kanban",
+  "obsidian-mind-map",
+  "readwise-official",
+  "google-calendar"
 ]
