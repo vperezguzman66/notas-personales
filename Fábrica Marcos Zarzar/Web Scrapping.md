@@ -21,3 +21,22 @@ Aplicación web para comparar precios de productos en las principales tiendas de
 
 - Python 3.11 o superior
 - Conexión a internet
+
+
+Bug fix: precios sin mostrar en Homecenter
+
+Problema: Los productos de Homecenter/Sodimac aparecían todos con "Sin precio" al buscar.
+
+Causa: La función _best_price en homecenter.py solo buscaba los tipos internetPrice y cmrPrice, pero Sodimac devuelve eventPrice (precio oferta activo) y normalPrice (precio tachado). Como ninguno de los dos tipos hardcodeados aparecía, siempre retornaba None.
+
+Solución: Se reemplazó la búsqueda hardcodeada por una lista de prioridad ordenada:
+_PRICE_PRIORITY = ["eventPrice", "internetPrice", "offerPrice", "cmrPrice", "normalPrice"]
+
+---
+Nueva funcionalidad: vista tabla con desviación del promedio
+
+Qué se hizo:
+- Se reemplazó la grilla de tarjetas de la búsqueda simple por una tabla con columnas: Tienda, Producto, Precio, Desviación del promedio.
+- Se calculó la desviación como ((precio - promedio) / promedio) × 100 sobre todos los resultados con precio válido.
+- Badges de color: verde para productos más baratos que el promedio, rojo para los más caros, gris para los que están cerca del promedio (< 0.5%).
+- La columna de desviación también se incluyó en el CSV exportado.
