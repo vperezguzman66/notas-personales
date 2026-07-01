@@ -406,3 +406,31 @@ Documento:
 - Mantener mínima la allowlist de admins.
 - Auditar eventos `401/403/429` en logs.
 - No commitear secretos en git (`.env` está ignorado).
+## Branding LinkedIn (2026-06-30)
+
+Assets de imagen de marca añadidos y publicados en LinkedIn:
+
+### Página de empresa (VP Services & Consulting SpA)
+
+- URL: `linkedin.com/company/135184612`
+- Banner subido: `public/assets/social/banner-linkedin-company.png`
+- Dimensiones: 1128 × 191 px
+- Diseño: fondo navy oscuro, grilla diagonal, barra accent cian, nombre de empresa, tagline y URL `vpservices-it.com`
+- Descripción (resumen) también configurada en el perfil de empresa
+
+### Perfil personal (Víctor Pérez Guzmán)
+
+- URL: `linkedin.com/in/victorperezg`
+- Banner subido: `public/assets/social/banner-linkedin-personal.png`
+- Dimensiones: 1584 × 396 px
+- Diseño: gradiente navy, grilla diagonal, barra accent cian izquierda, nombre, cargo "Senior Developer & Tech Consultant", especialidades y empresa
+
+### Assets en el repositorio
+
+Ambos archivos guardados en `vpservices-web/public/assets/social/`:
+
+| Archivo | Tamaño | Uso |
+|---|---|---|
+| `banner-linkedin-company.png` | ~47 KB | Portada página de empresa LinkedIn |
+| `banner-linkedin-personal.png` | ~40 KB | Portada perfil personal LinkedIn |
+| `og-image.svg` | — | Open Graph / vista previa en redes |
