@@ -581,3 +581,11 @@ Progreso del detector sobre `public/`: 23 → 22 (PR #57) → 19 (PR #58) → 13
 - `overused-font`/`single-font` en `admin-leads.*`: panel interno (registro "product" en `PRODUCT.md`, no "brand"), fuera del alcance de esta auditoría.
 
 Con el PR #65 se cerraron todos los P0, P1 y P2 identificados en la revisión dual-agent del 2026-07-02. Reporte completo guardado en `.impeccable/critique/` dentro del repo (no versionado).
+
+## Ajuste manual de balance visual y color (2026-07-02, post-auditoría)
+
+Retoque adicional de Victor sobre el mismo home, fuera del flujo de Impeccable (commit local, aún sin PR al momento de documentar):
+
+- Links sociales (LinkedIn, Instagram, TikTok, X) agregados a la columna de contacto, para llenar el espacio vacío que quedaba junto al formulario.
+- Texto del logo oculto en mobile (`<480px`) para evitar wrap junto al botón de menú.
+- Colores morado (`--secondary`) y verde (`--accent`) de la paleta —ya definidos pero casi sin uso— aplicados a íconos de servicio, stats del hero, badges del terminal y el ícono de WhatsApp, en vez de repetir el mismo cian en todo.
