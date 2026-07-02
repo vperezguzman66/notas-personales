@@ -468,3 +468,76 @@ Assets guardados en `vpservices-web/public/assets/social/ig-highlight-*.png` (10
 - Archivo: `public/assets/social/ig-profile.png` (mismo que Instagram)
 - Subido a la página de empresa `linkedin.com/company/vp-services-consulting-spa` (2026-07-01)
 - Branding consistente: navy + anillo cian + "VP SERVICES" en blanco/cian
+
+## SEO — auditoría técnica y páginas de servicio (2026-07-01)
+
+Auditoría completa del sitio (Lighthouse mobile: Accesibilidad 100, Best Practices 100, SEO 100) confirmó que lo técnico ya estaba resuelto — el problema real de visibilidad era falta de contenido indexable (una sola página) y de señales externas (Search Console, Google Business Profile, backlinks).
+
+### Páginas de servicio nuevas
+
+Se agregaron 4 páginas de contenido indexables bajo `public/servicios/`, cada una con meta tags únicos, breadcrumb, JSON-LD (`Service` + `BreadcrumbList` + `FAQPage`) y CTA hacia `/#contacto`:
+
+| Página | URL final |
+|---|---|
+| Consultoría TI | `vpservices-it.com/servicios/consultoria-ti` |
+| Desarrollo de Software | `vpservices-it.com/servicios/desarrollo-de-software` |
+| Inteligencia Artificial | `vpservices-it.com/servicios/inteligencia-artificial` |
+| Soporte y Mantenimiento | `vpservices-it.com/servicios/soporte-y-mantenimiento` |
+
+Detalle importante: Cloudflare Workers Assets redirige automáticamente `/pagina.html` → `/pagina` (307). Todas las URLs canónicas, OG, JSON-LD y enlaces internos quedaron apuntando a la ruta **sin** `.html` para evitar ese salto de redirección innecesario.
+
+`sitemap.xml` actualizado con las 5 URLs (antes solo tenía el home). Home (`index.html`) ahora incluye enlaces "Leer más" desde cada tarjeta de servicio hacia su página de detalle.
+
+### Fix de bug en build
+
+`scripts/build.mjs` (el script que minifica y hashea `.css`/`.js`) solo reescribía referencias de archivo sueltas (`"style.css"`), no rutas absolutas (`"/style.css"`) — las páginas nuevas (que usan rutas absolutas porque viven en un subdirectorio) quedaban con CSS/JS en 404. Corregido para soportar ambos formatos.
+
+`public/main.js`: el manejo del formulario de contacto ahora usa optional chaining, porque solo el home tiene ese formulario — sin esto, las páginas de servicio rompían el navbar/menú móvil por un error de JS al cargar.
+
+### Deploy y control de versiones
+
+- Deployado a producción (`npx wrangler deploy`) y verificado en vivo (200 sin redirects en las 5 URLs).
+- Commit `feat(seo): agregar páginas de servicio y actualizar sitemap` → PR [#53](https://github.com/vperezguzman66/vpservices-web/pull/53) → mergeado a `main` tras pasar CI (squash + rama eliminada).
+
+## Google Search Console (2026-07-01)
+
+- Propiedad `sc-domain:vpservices-it.com` ya estaba verificada y con el sitemap enviado desde antes (30 jun), pero solo tenía 1 página descubierta.
+- Sitemap reenviado manualmente tras el deploy; confirmado por API que pasó de 1 a 5 URLs "submitted" el mismo día.
+
+### Chequeo automatizado de indexación (temporal)
+
+Para verificar en unos días si Google indexó las 4 páginas nuevas, se creó infraestructura temporal de solo lectura:
+
+- Proyecto GCP nuevo: `vpservices-search-console` (ID `firm-streamer-501200-f5`), con la Search Console API habilitada.
+- OAuth client tipo "App de escritorio", modo prueba (usuario de prueba: `vperezguzman@gmail.com`), scope único `webmasters.readonly`.
+- Dos rutinas programadas (Claude Code routines, one-shot) para **2026-07-04**:
+  - `14:00 UTC` — "GSC indexing check - vpservices-it.com service pages": consulta sitemap + URL Inspection API de las 4 páginas nuevas y el home, entrega reporte.
+  - `14:15 UTC` — "Revoke vpservices-search-console OAuth access": revoca el refresh token vía API y verifica que quedó inválido.
+- El proyecto GCP en sí queda existiendo (vacío, sin costo) después de la revocación, salvo que se pida borrarlo explícitamente.
+- Ambas rutinas tienen notificación push (Claude Code / Remote Control) habilitada, pero **solo la disparan si algo falla** (refresh token rechazado, revoke que no invalidó el token de verdad). Si todo sale bien, no avisan proactivamente — el reporte queda en el dashboard de rutinas.
+- Fallback manual si el revoke automático falla: <https://myaccount.google.com/permissions> con la cuenta `vperezguzman@gmail.com`, buscar "VP Services Search Console Checker" y quitar el acceso.
+- Documentación técnica detallada en el repo: `docs/ops/gsc-indexing-check.md`.
+
+## Productos propios publicados en la web (2026-07-01)
+
+Se publicaron en el sitio los dos productos de software que Victor ya tenía desarrollados, hasta ahora sin presencia en la web corporativa:
+
+| Producto | Proyecto de código | URL |
+|---|---|---|
+| Control de Licencias de Software | `Proyectos/license-control/` | `vpservices-it.com/productos/control-de-licencias` |
+| Buscador de Parches y Vulnerabilidades en Servidores | `Proyectos/vulnapp/` | `vpservices-it.com/productos/buscador-de-vulnerabilidades` |
+
+### Qué se agregó
+
+- Nueva sección **"Productos"** en el home (`#productos`), con nav/footer actualizados, siguiendo el mismo patrón visual y de SEO que las páginas de servicio (meta tags únicos, canonical, OG/Twitter, JSON-LD `SoftwareApplication` + `BreadcrumbList` + `FAQPage`).
+- Dos páginas de detalle nuevas bajo `public/productos/`, con la misma estructura que las de servicios (hero, "¿Qué incluye?", "¿Es para ti?", "Cómo trabajamos", FAQ, CTA final).
+- `sitemap.xml` ampliado de 5 a 7 URLs.
+- JSON-LD del home (`hasOfferCatalog`) ahora incluye los 2 productos junto a los 4 servicios (catálogo renombrado a "Servicios y Productos").
+- CTA "Agendar demo" con precarga inteligente del formulario de contacto: el link `/?producto=<slug>#contacto` hace que `main.js` seleccione automáticamente el producto de interés y sugiera un mensaje inicial.
+
+### Deploy, control de versiones y Search Console
+
+- Commit `feat(productos): publicar Control de Licencias y Buscador de Vulnerabilidades` → PR [#55](https://github.com/vperezguzman66/vpservices-web/pull/55) → CI verde → mergeado a `main` (squash + rama eliminada).
+- Deployado a producción (`npx wrangler deploy`) y verificado en vivo (200 en ambas páginas nuevas y en `sitemap.xml`).
+- Sitemap reenviado manualmente en Search Console: pasó de 5 a **7 páginas descubiertas** el mismo día, status "Success".
+- `README.md` del repo documentado con una sección "Productos propios" (URLs, mecanismo de precarga del CTA, referencia a PR #55).
