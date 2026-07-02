@@ -544,23 +544,40 @@ Se publicaron en el sitio los dos productos de software que Victor ya tenía des
 
 ## Auditoría de diseño con Impeccable (2026-07-02)
 
-Se instaló [Impeccable](https://impeccable.style/) como skill de Claude Code (`.claude/skills/impeccable/`, en `.gitignore` — no se versiona) para detectar "AI slop" (clichés visuales de IA) y problemas reales de contraste en `public/`.
+Se instaló [Impeccable](https://impeccable.style/) como skill de Claude Code (`.claude/skills/impeccable/`, en `.gitignore` — no se versiona) para detectar "AI slop" (clichés visuales de IA) y problemas reales de contraste/accesibilidad en `public/`. Se escribió `PRODUCT.md` en la raíz del repo (sí versionado) con el contexto estratégico de marca: registro "brand", audiencia (dueños de pyme), personalidad ("técnico y de confianza"), y anti-referencias explícitas (nada de plantilla genérica de SaaS con IA).
+
+### Revisión completa (dual-agent)
+
+Se corrió una revisión de diseño completa sobre el home: dos evaluaciones aisladas en paralelo —una revisión de diseño estilo director de arte (heurísticas de Nielsen, carga cognitiva, personas de usuario) y una de evidencia de detector/navegador (CLI + screenshots)— sintetizadas en un solo reporte. Puntaje inicial: **21/40** (banda "Aceptable", baja). Halló, entre otras cosas, que el sitio en vivo violaba las anti-referencias que el propio `PRODUCT.md` acababa de fijar (gradient-text, border-left de acento, eyebrow tags — exactamente lo que se pidió evitar).
 
 ### Hallazgos y qué se corrigió
 
-Primera corrida: 23 anti-patrones. Se corrigieron los que eran bugs reales (no solo estética):
+Primera corrida del detector: 23 anti-patrones. Se corrigieron los que eran bugs reales o se pidió explícitamente resolver:
 
 | Fix | Detalle | PR |
 |---|---|---|
 | Contraste 1.0:1 en `admin-leads.css` | `input, select, button` y una regla `button` aparte competían por `background`/`color` sobre el mismo elemento (igual especificidad) — el detector leía la regla equivocada como fondo real. `button` ahora tiene su propio bloque autocontenido. | [#57](https://github.com/vperezguzman66/vpservices-web/pull/57) |
 | Contraste 2.7:1 en `.t-comment` (terminal animado del hero) | Color muy oscuro `#3d5a78` → `var(--text-muted)` (~7.5:1). | [#58](https://github.com/vperezguzman66/vpservices-web/pull/58) |
 | Contraste 1.8:1 en `.featured-badge` ("Más solicitado") y `.founder-avatar` ("VP") | Texto blanco sobre gradiente cian→morado fallaba en el extremo cian. Ahora fondo cian sólido + texto oscuro, mismo patrón que el logo y el botón primario (~10.9:1). | [#58](https://github.com/vperezguzman66/vpservices-web/pull/58) |
-| `icon-tile-stack` en las 6 cards (4 servicios + 2 productos) | El ícono en cuadrado redondeado sobre el título es "la plantilla universal de feature-card de IA". Se pidió explícitamente arreglarlo (a diferencia de las otras decisiones de marca, que se dejaron intactas). Se reemplazó por ícono y título en línea, sin contenedor propio. | [#59](https://github.com/vperezguzman66/vpservices-web/pull/59) |
+| `icon-tile-stack` en las 6 cards (4 servicios + 2 productos) | El ícono en cuadrado redondeado sobre el título es "la plantilla universal de feature-card de IA". Se pidió explícitamente arreglarlo (a diferencia de las otras decisiones de marca, que se dejaron intactas en ese momento). Se reemplazó por ícono y título en línea, sin contenedor propio. | [#59](https://github.com/vperezguzman66/vpservices-web/pull/59) |
+| **[P0]** Formulario sin validación | `novalidate` sin reemplazo en JS — un envío vacío llegaba a la red y mostraba un error genérico que sonaba a falla de servidor. Ahora `form.reportValidity()` bloquea el envío antes del `fetch()` y enfoca el primer campo inválido. | [#60](https://github.com/vperezguzman66/vpservices-web/pull/60) |
+| **[P0]** Scroll-reveal podía dejar secciones invisibles para siempre | Las cards de servicios/tecnologías/valores partían en `opacity:0` sin ningún fallback si `main.js` fallaba (bloqueador de anuncios, error previo, JS deshabilitado), ni respetaba `prefers-reduced-motion`. Ahora son visibles por defecto; la animación es una mejora progresiva opcional. | [#60](https://github.com/vperezguzman66/vpservices-web/pull/60) |
+| **[P0]** Colisión de texto en el hero móvil | `.hero-scroll-hint` se superponía con `.hero-stats` en viewports ~390-432px, tapando "TECNOLOGÍAS DOMINADAS" con "EXPLORAR". Oculto bajo `max-width:700px`. | [#60](https://github.com/vperezguzman66/vpservices-web/pull/60) |
+| **[P1]** El sitio violaba su propio brief anti-slop | `PRODUCT.md` prohíbe gradient-text, border-left de acento y eyebrow tags sobre cada sección — el sitio en vivo tenía los tres. Corregido de punta a punta: **tipografía** Inter/Space Grotesk → IBM Plex Mono (títulos, refuerza el motivo de terminal ya presente) + IBM Plex Sans (cuerpo); **gradient-text** del H1 → color sólido (`.text-accent`); **border-left** de la cita del fundador → fondo cian tenue; **eyebrow tags** quitados en las 7 páginas (35 instancias); **stats duplicados** (hero vs. founder) → quitado el bloque del fundador; **bounce-easing** del chevron de scroll → easing exponencial suave con `prefers-reduced-motion`. | [#62](https://github.com/vperezguzman66/vpservices-web/pull/62) |
+| **[P1]** Fallo silencioso en Turnstile | Si `/api/contact-config` fallaba, el script de Turnstile no cargaba, o faltaba el `sitekey`, el widget "Verificación anti-bot" quedaba vacío para siempre y el formulario se volvía imposible de enviar sin ninguna explicación. Ahora muestra un mensaje visible + botón "Reintentar", más un timeout de 8s de red de seguridad. De paso se corrigió la asociación de accesibilidad del label vía `aria-labelledby`. | [#63](https://github.com/vperezguzman66/vpservices-web/pull/63) |
+| **[P2]** Avatar de iniciales en vez de foto real | Contradecía el principio "el experto es la marca" del propio `PRODUCT.md`. Reemplazado por una foto real de Víctor (`public/assets/social/founder-photo.jpg`) con anillo cian de marca. | [#65](https://github.com/vperezguzman66/vpservices-web/pull/65) |
+| **[P2]** Jerga técnica sin traducir | Las cards de productos del home mostraban NVD, CISA KEV, EPSS, WinRM, SAM/ELP sin contexto para audiencia pyme no técnica. Reescritas a lenguaje benefit-first; las páginas de detalle conservan la explicación técnica completa. | [#65](https://github.com/vperezguzman66/vpservices-web/pull/65) |
+| **[P2]** Accesibilidad del menú móvil | Drawer sin cierre por Escape/click-afuera/ícono X; hamburguesa de 32×24px (bajo el mínimo táctil de 44×44). Se agregó backdrop, cierre con Escape y click-afuera, animación de hamburguesa a X, y el botón ahora mide 44×44px. | [#65](https://github.com/vperezguzman66/vpservices-web/pull/65) |
+| **[P2]** Select sin agrupar | "Servicio de interés" mezclaba 7 opciones de servicios y productos en una lista plana. Ahora usa `<optgroup>` para separar ambos grupos. | [#65](https://github.com/vperezguzman66/vpservices-web/pull/65) |
 
-Deployados a producción tras cada merge (`npx wrangler deploy`), verificados visualmente en navegador. Se investigaron a fondo 3 hallazgos adicionales (`cramped-padding` ×2 y `clipped-overflow-container`) y resultaron ser falsos positivos del análisis estático — no requieren cambios (ver detalle en el README del repo).
+Deployados a producción tras cada merge (`npx wrangler deploy`), verificados visualmente en navegador y con pruebas funcionales en vivo (envío de formulario vacío, viewport móvil, fallo forzado de Turnstile, drawer móvil con backdrop/Escape/click-afuera).
 
-Progreso del detector sobre `public/`: 23 → 22 (PR #57) → 19 (PR #58) → **13 anti-patrones** (PR #59, estado actual).
+Progreso del detector sobre `public/`: 23 → 22 (PR #57) → 19 (PR #58) → 13 (PR #59) → **7 anti-patrones** (estado actual, sin cambios tras el PR #65 — los fixes P2 eran de UX/contenido, no anti-patrones detectables por la herramienta).
 
-### Qué se dejó sin tocar (decisión de marca, no bug)
+### Falsos positivos investigados (sin cambios necesarios)
 
-Los 13 anti-patrones restantes son elección de diseño de Victor, no errores: fuentes Inter/Space Grotesk (las más usadas en sitios generados por IA), `gradient-text` en el hero, `bounce-easing` y el borde `side-tab` de `.value-item`, más los 3 falsos positivos ya investigados. Quedan documentados por si en el futuro se quiere rediseñar la identidad visual.
+- `clipped-overflow-container` (`body { overflow-x: hidden }`): guard intencional contra scroll horizontal por los fondos decorativos full-bleed; nada necesita "escapar" de él hoy.
+- `cramped-padding` ×2 en `<section class="hero">`: el detector confunde capas de fondo decorativas sin texto (`.hero-grid`, `.hero::before`) con contenido pegado al borde. El contenido real sí tiene inset propio.
+- `overused-font`/`single-font` en `admin-leads.*`: panel interno (registro "product" en `PRODUCT.md`, no "brand"), fuera del alcance de esta auditoría.
+
+Con el PR #65 se cerraron todos los P0, P1 y P2 identificados en la revisión dual-agent del 2026-07-02. Reporte completo guardado en `.impeccable/critique/` dentro del repo (no versionado).
