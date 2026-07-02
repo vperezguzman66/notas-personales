@@ -434,3 +434,37 @@ Ambos archivos guardados en `vpservices-web/public/assets/social/`:
 | `banner-linkedin-company.png` | ~47 KB | Portada página de empresa LinkedIn |
 | `banner-linkedin-personal.png` | ~40 KB | Portada perfil personal LinkedIn |
 | `og-image.svg` | — | Open Graph / vista previa en redes |
+
+## Instagram (2026-06-30)
+
+Cuenta creada y configurada con branding inicial:
+
+- **Usuario**: `@vpservicesconsulting`
+- **Nombre de perfil**: VP Services & Consulting SpA
+
+### Story Highlights
+
+5 Highlights publicados con covers diseñados en navy/cian (coherentes con identidad LinkedIn):
+
+| Highlight | Ícono | Archivo cover |
+|---|---|---|
+| Servicios | Líneas horizontales | `ig-highlight-servicios.png` |
+| Proyectos | `</>` | `ig-highlight-proyectos.png` |
+| Cloud | Nube | `ig-highlight-cloud.png` |
+| IA & Agentes | Red neuronal | `ig-highlight-ia-agentes.png` |
+| Contacto | Sobre/email | `ig-highlight-contacto.png` |
+
+Assets guardados en `vpservices-web/public/assets/social/ig-highlight-*.png` (1080×1920 px). Mergeados en PR #51.
+
+### Foto de perfil
+
+- Archivo: `public/assets/social/ig-profile.png`
+- Dimensiones: 800×800 px
+- Diseño: fondo navy con grilla diagonal, anillo cian, "VP" en blanco, línea divisora cian, "SERVICES" en cian
+- Mergeado en PR #52 (2026-06-30)
+
+### Logo página de empresa LinkedIn
+
+- Archivo: `public/assets/social/ig-profile.png` (mismo que Instagram)
+- Subido a la página de empresa `linkedin.com/company/vp-services-consulting-spa` (2026-07-01)
+- Branding consistente: navy + anillo cian + "VP SERVICES" en blanco/cian
