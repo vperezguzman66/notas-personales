@@ -541,3 +541,26 @@ Se publicaron en el sitio los dos productos de software que Victor ya tenía des
 - Deployado a producción (`npx wrangler deploy`) y verificado en vivo (200 en ambas páginas nuevas y en `sitemap.xml`).
 - Sitemap reenviado manualmente en Search Console: pasó de 5 a **7 páginas descubiertas** el mismo día, status "Success".
 - `README.md` del repo documentado con una sección "Productos propios" (URLs, mecanismo de precarga del CTA, referencia a PR #55).
+
+## Auditoría de diseño con Impeccable (2026-07-02)
+
+Se instaló [Impeccable](https://impeccable.style/) como skill de Claude Code (`.claude/skills/impeccable/`, en `.gitignore` — no se versiona) para detectar "AI slop" (clichés visuales de IA) y problemas reales de contraste en `public/`.
+
+### Hallazgos y qué se corrigió
+
+Primera corrida: 23 anti-patrones. Se corrigieron los que eran bugs reales (no solo estética):
+
+| Fix | Detalle | PR |
+|---|---|---|
+| Contraste 1.0:1 en `admin-leads.css` | `input, select, button` y una regla `button` aparte competían por `background`/`color` sobre el mismo elemento (igual especificidad) — el detector leía la regla equivocada como fondo real. `button` ahora tiene su propio bloque autocontenido. | [#57](https://github.com/vperezguzman66/vpservices-web/pull/57) |
+| Contraste 2.7:1 en `.t-comment` (terminal animado del hero) | Color muy oscuro `#3d5a78` → `var(--text-muted)` (~7.5:1). | [#58](https://github.com/vperezguzman66/vpservices-web/pull/58) |
+| Contraste 1.8:1 en `.featured-badge` ("Más solicitado") y `.founder-avatar` ("VP") | Texto blanco sobre gradiente cian→morado fallaba en el extremo cian. Ahora fondo cian sólido + texto oscuro, mismo patrón que el logo y el botón primario (~10.9:1). | [#58](https://github.com/vperezguzman66/vpservices-web/pull/58) |
+| `icon-tile-stack` en las 6 cards (4 servicios + 2 productos) | El ícono en cuadrado redondeado sobre el título es "la plantilla universal de feature-card de IA". Se pidió explícitamente arreglarlo (a diferencia de las otras decisiones de marca, que se dejaron intactas). Se reemplazó por ícono y título en línea, sin contenedor propio. | [#59](https://github.com/vperezguzman66/vpservices-web/pull/59) |
+
+Deployados a producción tras cada merge (`npx wrangler deploy`), verificados visualmente en navegador. Se investigaron a fondo 3 hallazgos adicionales (`cramped-padding` ×2 y `clipped-overflow-container`) y resultaron ser falsos positivos del análisis estático — no requieren cambios (ver detalle en el README del repo).
+
+Progreso del detector sobre `public/`: 23 → 22 (PR #57) → 19 (PR #58) → **13 anti-patrones** (PR #59, estado actual).
+
+### Qué se dejó sin tocar (decisión de marca, no bug)
+
+Los 13 anti-patrones restantes son elección de diseño de Victor, no errores: fuentes Inter/Space Grotesk (las más usadas en sitios generados por IA), `gradient-text` en el hero, `bounce-easing` y el borde `side-tab` de `.value-item`, más los 3 falsos positivos ya investigados. Quedan documentados por si en el futuro se quiere rediseñar la identidad visual.
