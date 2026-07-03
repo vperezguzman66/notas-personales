@@ -17,9 +17,11 @@ Code review (8 agentes en paralelo) encontró 10 hallazgos el 2026-07-03. **Los 
 
 Validado localmente: servidor arranca, webhook sin secreto no inserta nada en DB, keyword vacío devuelve 422, simulate funciona con el pipeline unificado, `/auth/callback` sin `state` responde 400. `CLAUDE.md`/`README.md`/`.env.example` del proyecto actualizados con `WEBHOOK_SECRET` y el nuevo endpoint `/api/ml/auth-url`.
 
+Commiteado y pusheado a `origin/main` (`1c4d5bd`) — sin pendientes de sincronización.
+
 Sigue sin credenciales ML configuradas (`.env` vacío en esos campos) — el bot continúa en **modo dry-run total**.
 
-**Pendiente:** revisar el diff y decidir si se commitea/pushea a `origin/main`.
+**Sin pendientes abiertos actualmente** para este proyecto.
 
 # ML Bot — Respuestas automáticas para Mercado Libre
 
