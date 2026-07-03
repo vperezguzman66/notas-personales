@@ -1,6 +1,16 @@
 [[Solicitudes de Software]]
 # VulnApp V2.4.0
 
+## Estado (2026-07-02)
+
+Sprint **S4** cerrado: sprint de bugs (S4-01 a S4-07) + auditoría técnica formal del 2026-06-16 (`docs/AUDIT_REPORT_2026-06-16.md`, 9 hallazgos F-01 a F-09). Se remediaron las 5 prioridades de la auditoría — timeout WinRM, job queue persistida en SQLite, auditoría funcional (`audit_event`), límites de consulta homogeneizados, endurecimiento de API key/secrets — organizadas en 8 commits separados por bloque en `main`. **216/216 tests pasan.** `ROADMAP.md` y `CHANGELOG.md` ya reflejan el sprint completo.
+
+**Pendiente de decidir:**
+- Qué hacer con el diff de `app/data/vulnapp.db` (binario, cambios de datos locales de prueba, no se commiteó)
+- Carpeta `memory/` sin trackear en el repo (notas propias del proyecto, no código) — decidir si se ignora o se limpia
+
+Hallazgos de la auditoría aceptados como deuda técnica (no bloqueantes): F-03 (fallback NVD sin ventana temporal), F-06 (SQLite dentro del árbol de la app), F-07 (notificaciones sin observabilidad fuerte), F-09 (caché KEV a vigilar en alta concurrencia).
+
 [](https://github.com/vperezguzman66/vulnapp#vulnapp-v240)
 
 Aplicación API modular para **detectar vulnerabilidades (CVE)** en servidores, gestionar el ciclo de vida de la remediación y colectar inventario remoto de forma automática y programada.
@@ -40,7 +50,7 @@ Capacidades V2.4.0:
 - `app/services/scan_orchestrator.py` — orquesta recolección + escaneo
 - `app/services/scheduler.py` — scheduler APScheduler para scans periódicos
 - `app/services/notifier.py` — envío de alertas por webhook y email
-- `app/services/job_queue.py` — cola de jobs asíncronos en memoria
+- `app/services/job_queue.py` — cola de jobs asíncronos persistida en SQLite (`job_queue_repository.py`)
 - `app/services/http_client.py` — cliente HTTP con retry
 - `app/services/sources/nvd_source.py` — consulta CVEs NVD
 - `app/services/sources/cisa_kev_source.py` — feed CISA KEV con caché compartida de clase (TTL 4h)
@@ -91,7 +101,7 @@ Variables de entorno relevantes (`.env`):
 
 |Variable|Default|Descripción|
 |---|---|---|
-|`VULNAPP_API_KEY`|`CHANGE_ME`|API key obligatoria (falla al arrancar si tiene el valor default)|
+|`VULNAPP_API_KEY`|`CHANGE_ME`|API key obligatoria (falla al arrancar si tiene el valor default o menos de 32 caracteres)|
 |`VULNAPP_AUTH_ENABLED`|`true`|Habilita autenticación|
 |`VULNAPP_STORAGE_BACKEND`|`sqlite`|Backend de persistencia (`sqlite\|json\|postgres`)|
 |`VULNAPP_SQLITE_PATH`|`app/data/vulnapp.db`|Ruta de la base de datos SQLite|
@@ -265,7 +275,7 @@ Backend por defecto: **SQLite** (`app/data/vulnapp.db`). Recomendado para sing
 
 [](https://github.com/vperezguzman66/vulnapp#limitaciones)
 
-- Cola de jobs en memoria: se pierde al reiniciar el servidor (usar Redis/PostgreSQL para producción)
+- Cola de jobs persistida en SQLite: se conserva al reiniciar el servidor, pero sigue siendo single-node
 - Correlación por keyword/CPE en NVD (sin fingerprinting profundo de versiones)
 - Collector Linux requiere cliente `ssh` del sistema
 - Collector Windows requiere `pywinrm` y WinRM habilitado en el target
