@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "René Medina/Vulnerabilidades y Parches S.O..md",
+                "file": "Temas Varios/Control de Licencias Pyme.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Vulnerabilidades y Parches S.O."
+              "title": "Control de Licencias Pyme"
             }
           }
         ]
@@ -198,14 +198,15 @@
   },
   "active": "44bda6c9d55f8083",
   "lastOpenFiles": [
+    "Temas Varios/Control de Licencias de Software.md",
+    "Temas Varios/Control de Licencias Pyme.md",
+    "René Medina/Vulnerabilidades y Parches S.O..md",
     "René Medina/Vulnerabilidades y Parches S.O..md.tmp.1655.7b5eb1dd6e23",
     "René Medina/Solicitudes de Software.md",
-    "René Medina/Vulnerabilidades y Parches S.O..md",
     "VP Services and Consulting SPA/Página Web.md",
     "Diario/2026-07-01.md",
     "Temas Varios/Varios.md",
     "Detalle Tareas.md",
-    "Temas Varios/Control de Licencias Pyme.md",
     "Temas Varios/BTC Monitor.md",
     "Untitled Kanban.md",
     "Fábrica Marcos Zarzar/Web Scrapping.md",
@@ -214,7 +215,6 @@
     "Fábrica Marcos Zarzar/Fábrica Precios.md",
     "Fábrica Marcos Zarzar/Marcos - Diego.md",
     "Fábrica Marcos Zarzar/Ferretería Sistema de Gestión.md",
-    "Temas Varios/Control de Licencias de Software.md",
     "René Medina/BuscaGit.md",
     "René Medina",
     "Fábrica Marcos Zarzar",
@@ -232,7 +232,6 @@
     "Recursos/Plantillas/Bug Report.md",
     "Recursos/Plantillas",
     "Recursos",
-    "Proyectos/BuscaGit/Sesiones",
-    "Proyectos/BuscaGit"
+    "Proyectos/BuscaGit/Sesiones"
   ]
 }

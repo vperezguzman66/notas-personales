@@ -285,7 +285,7 @@ Fases 1, 2 y 3 completas:
 - **Descubrimiento (P9):** importa CSV/JSON de inventario (OCS Inventory, GLPI, Lansweeper); auto-detección de columnas; reconciliación de software y usuarios contra licencias y asignaciones; acciones directas (crear licencia, asignar usuario); implementado en `handlers/discovery.cjs` + `lib/discovery.js` + página `Discovery.jsx`.
 - **Workflow de renovaciones:** estados `pending/in_review/approved/cancelled`, responsable asignado, checklist de 4 ítems, alertas proactivas en página Alertas y notificación del SO.
 - **Política de contraseñas:** mínimo 8 caracteres + mayúscula + número; `validatePassword` en backend y frontend con hint visible.
-- **Suite de tests:** 65 tests en 4 suites con Jest 30 (`npx jest --no-coverage` desde la raíz).
+- **Suite de tests (actualizado 2026-07-02):** 146 tests en 16 suites con Jest 30 (raíz) + 13 tests de renderer con Vitest — 159 en total.
 - **Hardening pre-producción:** TOCTOU en restore, AES authenticate-then-decrypt, path traversal en adjuntos, migraciones atómicas por transacción, bloqueo total de navegación en producción.
 - **Modularización del renderer:** `Compliance.jsx` reducido de 1929 → 661 líneas; `Discovery.jsx` extraído en 6 componentes en `components/discovery/`; lógica pura en `lib/complianceHelpers.js`, `lib/sam-maturity.js` y `lib/discovery.js`.
 
@@ -296,15 +296,27 @@ Fases 1, 2 y 3 completas:
 ```shell
 # Desde la raíz del proyecto
 npx jest --no-coverage
-# → 65 tests, 4 suites, ~1s
+# → 146 tests, 16 suites, ~7s
 ```
 
 |Suite|Tests|Cobertura|
 |---|---|---|
-|`crypto.test.js`|28|`encryptLicenseKey` / `decryptLicenseKey` round-trip, formato, datos corruptos|
-|`sam-normalize.test.js`|18|`normalizeProductKey`, `normalizeMetricType`, similitud Jaccard|
-|`elp-utils.test.js`|5|`classifyElpStatus` (over/under/compliant, strings numéricos, decimales)|
-|`validators.test.js`|14|Normalizadores CSV + `validatePassword`|
+|`ipc-schemas.test.js`|29|Contratos IPC y validaciones de payload|
+|`sam-normalize.test.js`|25|`normalizeProductKey`, `normalizeMetricType`, similitud Jaccard|
+|`validators.test.js`|25|Normalizadores CSV + `validatePassword`|
+|`attachment-security.test.js`|11|Validaciones de seguridad en adjuntos (incl. parser de cabecera ZIP real)|
+|`crypto.test.js`|10|`encryptLicenseKey` / `decryptLicenseKey` round-trip y datos corruptos|
+|`csv-security.test.js`|6|Reglas de seguridad para importación CSV|
+|`restore-security.test.js`|6|Validaciones críticas del flujo de restore|
+|`stepup-rate-limit.test.js`|6|Rate-limiting, audit log de fallos y validación de scope en `auth:stepUp`|
+|`elp-utils.test.js`|5|`classifyElpStatus` (over/under/compliant, strings numéricos, decimales)|
+|`attachments-sig-validated.test.js`|4|Columna `sig_validated` — adjuntos pre/post migración v17|
+|`backup-crypto.test.js`|4|Cifrado y compatibilidad de backups|
+|`ipc-safe.test.js`|4|Patch global de `ipcMain.handle` — errores internos no se filtran|
+|`backup-cross-session.test.js`|3|Validación de sesión en `pendingRestoreData`|
+|`key-store.test.js`|3|Fallback a path legacy si `safeStorage` no está disponible|
+|`renewals-checklist.test.js`|3|Defaults de checklist vacío vs explícito|
+|`rh06-stepup-backup-restore.test.js`|2|Integración de seguridad: `stepUp` requerido + backup/restore cifrado con contraseña|
 
 ### Hardening de seguridad y correcciones de integridad (2026-06)
 
