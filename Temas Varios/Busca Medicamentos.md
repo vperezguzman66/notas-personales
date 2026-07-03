@@ -56,3 +56,21 @@ Cruz Verde (Playwright) es ~10x más lenta que las otras 3 tiendas (httpx). `/ap
 Solución: `/api/search` pasa de JSON síncrono a **Server-Sent Events**, usando `asyncio.as_completed()` para emitir un snapshot acumulado (ordenado) cada vez que una farmacia termina, con la lista de farmacias aún pendientes. El frontend muestra un banner "Buscando aún en: X" y re-renderiza la tabla en cada evento. `_do_search` (bloqueante) se mantiene intacta para `/api/search-batch`, que no necesita este cambio.
 
 Verificado: los primeros 3 resultados llegan en ~1s (antes ~13s para cualquier resultado), y confirmé visualmente en el navegador que Cruz Verde completa el resto sin bloquear la vista inicial. Pusheado (`2cc8b4d`).
+
+### Bug fix (mismo día): SalcoBrand no encontraba dosis combinadas ("colmibe 40/10")
+
+Victor reportó que "colmibe 40/10" no aparecía en SalcoBrand (sí en Cruz Verde y Ahumada, y el producto sí existe en el catálogo de SalcoBrand). Probando directo contra la API de Algolia: **cualquier query con "/" devuelve 0 resultados**, sin importar el resto del texto — confirmado con 5 variantes distintas.
+
+Solución: normalizar patrones `N/M` (con o sin "mg") a `Nmg Mmg` antes de mandar la query, solo en `salcobrand.py`. De paso se agregó `quote()` a la query (se enviaba sin codificar URL, mismo tipo de bug latente con "&" o "+"). Verificado: "colmibe 40/10" pasó de 0 a 3 resultados (las 3 dosis de Colmibe), confirmado por API y en el navegador. Pusheado (`fb8b965`).
+
+Nota: esta es una limitación específica de dosis combinadas con "/", común en medicamentos cardiovasculares (losartán/hidroclorotiazida, etc.) — vale la pena tenerla presente si aparecen más reportes similares en otras tiendas.
+
+### Bug fix grave (mismo día): Doctor Simi bloqueaba TODA búsqueda de 2+ palabras
+
+Al revisar si Ahumada/Cruz Verde/Doctor Simi tenían el mismo problema de "/" que SalcoBrand, encontré algo mucho más importante: el endpoint `?ft={term}` de Doctor Simi (VTEX) responde HTTP 400 "Bad Request! Scripts are not allowed!" (un WAF) para **cualquier término de más de una palabra**, con o sin barra, con o sin números. Confirmado con "paracetamol infantil", "ibuprofeno 400mg", etc. — todas fallaban.
+
+Esto significaba que **cualquier búsqueda multi-palabra devolvía 0 resultados de Doctor Simi de forma silenciosa** desde el día 1 (el `except Exception: return []` se comía el error HTTP sin dejar rastro) — un problema bastante más grave que el de SalcoBrand, porque afectaba prácticamente cualquier búsqueda real con nombre + dosis.
+
+Nota lateral: mientras investigaba esto, hice suficientes requests directos contra la API de Doctor Simi como para gatillar su propio rate-limiting (429) y bloqueos temporales — hay que ser cuidadoso probando esta tienda en particular, con pausas entre requests.
+
+Solución: usar la variante de VTEX con el término como segmento de la URL (`/search/{term}?map=ft`) en vez de como query param (`?ft={term}`) — el mismo WAF no bloquea esta forma. Verificado con nuestro scraper real: "paracetamol infantil" e "ibuprofeno 400mg" pasaron de 0 a resultados reales, sin romper las búsquedas de una palabra. Pusheado (`2f32c53`).
