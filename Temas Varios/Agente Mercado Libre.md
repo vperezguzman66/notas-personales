@@ -139,3 +139,16 @@ python3 -m playwright install chromium
 ```
 
 Python 3.13 · Playwright 1.x · macOS
+
+---
+Bug fix (2026-07-03): logs duplicados en monitor.log
+
+Problema: cada línea de log aparecía dos veces en `monitor.log`.
+
+Causa: `logging.basicConfig` usaba un `FileHandler` (escribe directo a `monitor.log`) y un `StreamHandler` (escribe a stderr) al mismo tiempo. El crontab activo redirige `>> monitor.log 2>&1`, así que el `StreamHandler` volvía a escribir lo mismo en el mismo archivo. Un intento de fix anterior (commit `01bb8bb`) solo cubría el camino PM2 (redirigiendo su output a `/dev/null`), pero el mecanismo real en uso es crontab del sistema, no PM2.
+
+Solución: se quitó el `StreamHandler`, dejando solo el `FileHandler`. Verificado ejecutando el script con la misma redirección que usa el cron: una ejecución agrega exactamente las líneas esperadas, sin duplicar. Pusheado a GitHub (`d3481a7`).
+
+Nota: el repo sí tiene git con remoto privado (a diferencia de lo que decía la documentación general del workspace). El cron corre por `crontab -l`, no por PM2 — el `ecosystem.config.js` existe pero no está cargado en PM2 actualmente.
+
+Pendiente (no resuelto aún, decisión del usuario): `GMAIL_APP_PASSWORD` está hardcodeado en texto plano en `price_monitor.py` y presente en el historial de git desde el primer commit. El repo es privado, pero sigue siendo una credencial viva en control de versiones — recomendable moverla a `.env` (gitignored) y rotarla.
