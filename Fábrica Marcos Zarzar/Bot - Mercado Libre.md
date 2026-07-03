@@ -1,10 +1,25 @@
 [[Marcos - Diego]]
 
-## Estado (2026-07-02)
+## Estado (2026-07-03)
 
-Los 10 bugs detectados por code review (2026-06-28) y el `README.md` con arquitectura/instalación/endpoints ya están commiteados y pusheados a `origin/main` (`b7c791e`). No queda pendiente de sincronización local.
+Code review (8 agentes en paralelo) encontró 10 hallazgos el 2026-07-03. **Los 10 ya están corregidos en el working tree** (no commiteados aún — pendiente de revisión final del usuario antes de push):
 
-**Sin pendientes abiertos actualmente** para este proyecto.
+1. ~~`/webhook/ml` sin autenticación~~ → ahora exige `?secret=<WEBHOOK_SECRET>` en la query string; sin `WEBHOOK_SECRET` configurado rechaza todo (fail-closed).
+2. ~~`/auth/callback` sin `state` (CSRF)~~ → nuevo endpoint admin `GET /api/ml/auth-url` genera un `state` de un solo uso que el callback valida.
+3. ~~Sin renovación de token~~ → `ml_client.refresh_access_token()` usa `ML_REFRESH_TOKEN` y se reintenta automáticamente ante un 401.
+4. ~~Conexiones SQLite nunca cerradas~~ → `_conn()` ahora es un contextmanager que cierra la conexión en el `finally`.
+5. ~~Sin reintento de pending/error~~ → `_process_question` solo bloquea reprocesamiento si `status=="answered"`; pending/error se reintentan solos.
+6. ~~`upsert_keyword` trataba `id=0` como "sin ID"~~ → fix `is not None`.
+7. ~~Keyword con respuesta vacía~~ → `KeywordPayload` ahora valida `min_length=1`.
+8. ~~`ai_responder` indexaba `content[0]` sin guard~~ → agregado chequeo explícito.
+9. ~~Guard "¿ML listo?" duplicado 3 veces~~ → unificado en `ml_client.is_ready()`.
+10. ~~`/api/simulate` reimplementaba el pipeline~~ → ahora reusa `_process_question(..., publish=False)`.
+
+Validado localmente: servidor arranca, webhook sin secreto no inserta nada en DB, keyword vacío devuelve 422, simulate funciona con el pipeline unificado, `/auth/callback` sin `state` responde 400. `CLAUDE.md`/`README.md`/`.env.example` del proyecto actualizados con `WEBHOOK_SECRET` y el nuevo endpoint `/api/ml/auth-url`.
+
+Sigue sin credenciales ML configuradas (`.env` vacío en esos campos) — el bot continúa en **modo dry-run total**.
+
+**Pendiente:** revisar el diff y decidir si se commitea/pushea a `origin/main`.
 
 # ML Bot — Respuestas automáticas para Mercado Libre
 
