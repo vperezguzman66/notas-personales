@@ -1,6 +1,17 @@
 Landing corporativa + formulario de contacto en Cloudflare Workers, con backend robusto, trazabilidad de leads y hardening de seguridad en producción.
 
 [[Página Web]]
+
+## Estado y pendientes (2026-07-02)
+
+Todo el trabajo hasta el PR #66 (`fix(diseño): equilibra contacto y diversifica acentos de color`) está mergeado a `main` y pusheado a `origin/main` — sin cambios locales pendientes de subir.
+
+**Pendiente — dos rutinas en la nube programadas para 2026-07-04** (ver detalle en la sección "Google Search Console" más abajo):
+- `14:00 UTC` — chequeo de indexación GSC de las 4 páginas de servicio nuevas + home.
+- `14:15 UTC` — revocación del OAuth temporal (`vpservices-search-console`) creado para ese chequeo.
+
+Ambas avisan solo si algo falla; si sale bien, hay que revisar el dashboard de rutinas manualmente.
+
 ## Estado final implementado (2026-06)
 
 [](https://github.com/vperezguzman66/vpservices-web/blob/main/README.md#estado-final-implementado-2026-06)
@@ -584,7 +595,7 @@ Con el PR #65 se cerraron todos los P0, P1 y P2 identificados en la revisión du
 
 ## Ajuste manual de balance visual y color (2026-07-02, post-auditoría)
 
-Retoque adicional de Victor sobre el mismo home, fuera del flujo de Impeccable (commit local, aún sin PR al momento de documentar):
+Retoque adicional de Victor sobre el mismo home, fuera del flujo de Impeccable. Mergeado a `main` vía PR [#66](https://github.com/vperezguzman66/vpservices-web/pull/66) y desplegado a producción.
 
 - Links sociales (LinkedIn, Instagram, TikTok, X) agregados a la columna de contacto, para llenar el espacio vacío que quedaba junto al formulario.
 - Texto del logo oculto en mobile (`<480px`) para evitar wrap junto al botón de menú.

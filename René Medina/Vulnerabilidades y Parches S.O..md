@@ -11,6 +11,17 @@ Sprint **S4** cerrado: sprint de bugs (S4-01 a S4-07) + auditoría técnica form
 
 Hallazgos de la auditoría aceptados como deuda técnica (no bloqueantes): F-03 (fallback NVD sin ventana temporal), F-06 (SQLite dentro del árbol de la app), F-07 (notificaciones sin observabilidad fuerte), F-09 (caché KEV a vigilar en alta concurrencia).
 
+### Smoke test end-to-end (2026-07-02, tarde)
+
+Se levantó el servidor localmente (`uvicorn app.main:app`, puerto 8000) y se verificó en vivo, no solo con la suite de tests:
+
+- `GET /api/health` → 200; endpoints protegidos devuelven 401 sin `X-API-Key` y 200 con la key correcta (`/api/reports`, `/api/jobs`).
+- Se creó y eliminó un schedule de prueba con password real en el payload — la respuesta de `POST /api/schedules` confirmó que **no expone** `collect_request` ni la contraseña (solo `linux_targets_count`), validando en vivo el fix de seguridad del sprint S4.
+- Log del servidor mostró los eventos de auditoría funcionando (`AUDIT schedule_created`, `AUDIT schedule_deleted`).
+- La lista de `/api/jobs` trajo jobs de sesiones de prueba anteriores — confirma en la práctica que la persistencia de la job queue en SQLite (fix F-02) sobrevive a reinicios del proceso.
+- Dashboard (`/dashboard`) abierto en el navegador con la API key cargada: 18 reportes / 26 targets visibles, detalle de escaneo (`scan-hist-05`, host `srv-01`) renderizando findings, filtros por categoría técnica y severidad.
+- Servidor detenido al terminar la verificación.
+
 [](https://github.com/vperezguzman66/vulnapp#vulnapp-v240)
 
 Aplicación API modular para **detectar vulnerabilidades (CVE)** en servidores, gestionar el ciclo de vida de la remediación y colectar inventario remoto de forma automática y programada.

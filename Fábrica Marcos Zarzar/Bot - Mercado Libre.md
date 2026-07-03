@@ -1,5 +1,11 @@
 [[Marcos - Diego]]
 
+## Estado (2026-07-02)
+
+Los 10 bugs detectados por code review (2026-06-28) y el `README.md` con arquitectura/instalación/endpoints ya están commiteados y pusheados a `origin/main` (`b7c791e`). No queda pendiente de sincronización local.
+
+**Sin pendientes abiertos actualmente** para este proyecto.
+
 # ML Bot — Respuestas automáticas para Mercado Libre
 
 [](https://github.com/vperezguzman66/ml-bot#ml-bot--respuestas-autom%C3%A1ticas-para-mercado-libre)
