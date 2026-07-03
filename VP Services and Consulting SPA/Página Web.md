@@ -6,11 +6,12 @@ Landing corporativa + formulario de contacto en Cloudflare Workers, con backend 
 
 Todo el trabajo hasta el PR #66 (`fix(diseño): equilibra contacto y diversifica acentos de color`) está mergeado a `main` y pusheado a `origin/main` — sin cambios locales pendientes de subir.
 
-**Pendiente — dos rutinas en la nube programadas para 2026-07-04** (ver detalle en la sección "Google Search Console" más abajo):
+**Pendiente — tres rutinas en la nube programadas para 2026-07-04** (ver detalle en la sección "Google Search Console" más abajo):
 - `14:00 UTC` — chequeo de indexación GSC de las 4 páginas de servicio nuevas + home.
 - `14:15 UTC` — revocación del OAuth temporal (`vpservices-search-console`) creado para ese chequeo.
+- `14:30 UTC` — recordatorio agregado el 2026-07-02 (`trig_01XYXr7heBMCgLcARbTEBxWG`): a diferencia de las dos anteriores, esta **siempre** manda `PushNotification`, avisando que ya pasaron las otras dos y que toca revisar el resultado en https://claude.ai/code/routines/.
 
-Ambas avisan solo si algo falla; si sale bien, hay que revisar el dashboard de rutinas manualmente.
+Las dos primeras avisan solo si algo falla; la tercera avisa siempre, justamente para no depender de revisar el dashboard por cuenta propia.
 
 ## Estado final implementado (2026-06)
 

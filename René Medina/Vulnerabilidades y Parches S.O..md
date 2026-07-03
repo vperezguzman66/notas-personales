@@ -22,6 +22,29 @@ Se levantó el servidor localmente (`uvicorn app.main:app`, puerto 8000) y se ve
 - Dashboard (`/dashboard`) abierto en el navegador con la API key cargada: 18 reportes / 26 targets visibles, detalle de escaneo (`scan-hist-05`, host `srv-01`) renderizando findings, filtros por categoría técnica y severidad.
 - Servidor detenido al terminar la verificación.
 
+### Code review del bloque S4 (2026-07-02, noche) — 9 hallazgos priorizados
+
+Revisión multi-ángulo (8 buscadores independientes + verificación 1-voto) de los 6 commits del sprint S4. Documentado en detalle en `docs/CODE_REVIEW_2026-07-02.md` del repo. Resumen priorizado:
+
+**P0 — ✅ corregido y pusheado (commit `c3e1880`, 2026-07-02 noche):**
+- `VULNAPP_API_KEY` con mínimo de 32 caracteres rompía la suite de tests en un clone limpio o CI (conftest.py inyectaba una key de 19 chars que solo "funcionaba" localmente porque el `.env` real la enmascaraba vía `override=True`) — **confirmado por reproducción directa**. Fix: key de test subida a 32+ caracteres. Reverificado en un clone simulado sin `.env`: 216/216 tests pasan.
+- Validación del nombre del header (`VULNAPP_API_KEY_HEADER`) corría sin importar `AUTH_ENABLED`, rompiendo el arranque incluso con auth deshabilitada. Fix: movida al mismo guard `if AUTH_ENABLED:` que ya protegía la validación de la API key. Reverificado: arranca con auth deshabilitada y header malformado; sigue rechazándolo con auth habilitada.
+
+**P1 — ✅ corregido y pusheado (commits `8e7399e` + `a481f02`, 2026-07-02 noche):**
+- La job queue hacía I/O de sqlite síncrono sin `asyncio.to_thread`, bloqueando el event loop de FastAPI en cada creación/actualización de job — contradecía el propio patrón que este sprint aplicó al collector WinRM. Fix: `create/get/list_jobs/mark_running/mark_completed/mark_failed` pasan a ser `async` y envuelven cada llamada al repositorio en `asyncio.to_thread`. Actualizados los 15 call-sites en `routes.py`/`asset_routes.py`/`schedule_routes.py`/`scheduler.py` para awaitear, y los tests que ejercitan `JobQueue` directamente. Reverificado con smoke test end-to-end real (create → mark_running → mark_failed, get, list_jobs).
+- `load_dotenv(override=True)` invertía la precedencia: un `.env` residual podía pisar silenciosamente secretos inyectados por el entorno real en producción. Fix: revertido a `load_dotenv()` (override=False, default).
+
+**P2 — ✅ corregido y pusheado (commits `ab014fa` + `57ace92` + `1ff1191`, 2026-07-02 noche):**
+- `JobQueue` era el único repositorio del proyecto que no seguía el patrón `repository_factory`. Fix: ABC `JobQueueRepository` + `build_job_queue_repository()`, igual que el resto de repositorios.
+- El límite de 5000 assets seguía siendo truncamiento silencioso, no paginación real. Fix: `list_assets()` soporta `offset` real a nivel SQL; nuevo `list_all_assets()` pagina internamente sin truncar nunca, usado en los 3 call-sites internos (coverage, filtros de reportes, coverage-gaps del scheduler). Constante `MAX_INTERNAL_ASSET_QUERY_LIMIT` eliminada por quedar sin uso. 3 tests nuevos de paginación.
+- Instrumentación de auditoría (`audit_event`) duplicada entre `routes.py` y `scheduler.py` — reintroducía el mismo problema que S4-07 había eliminado para collector failures. Fix: extraído `execute_scan_job()` compartido a `scan_orchestrator.py`; de paso corrige que el scheduler no auditaba fallos de sincronización de assets (ahora ambos callers usan la versión más segura). `routes.py`/`scheduler.py` bajan ~110 líneas combinadas.
+
+**P3 — ⚠️ revisado dos veces, riesgo aceptado y documentado (commit `97f0cb1`, 2026-07-02 noche), sin cambios de código:**
+- Timeout de WinRM no mata el thread subyacente. Al profundizar para decidir el fix, se descubrió que la solución originalmente propuesta ("pasar `read_timeout_sec`/`operation_timeout_sec` explícitos") **no resuelve el problema real** — pywinrm reintenta indefinidamente en `get_command_output` sin importar el timeout de socket, mientras el target siga respondiendo "todavía no terminó". La mitigación real (executor dedicado para WinRM, aislado del pool compartido de `asyncio.to_thread`) es un cambio de diseño no trivial para un escenario de bajo impacto hoy (solo targets Windows lentos/problemáticos simultáneos, no caídos). Se decidió no implementarlo por ahora.
+- `prune_oldest` no atómico — tiene un fix simple disponible (una sola sentencia `DELETE ... WHERE job_id NOT IN (...)` con tiebreaker por `rowid`, sin migración de esquema) pero no es explotable en el despliegue actual (single-process, sin `workers=`). Se evaluó implementarlo igual pero se decidió diferir.
+
+**Por qué:** severidad/esfuerzo estimados por hallazgo para poder decidir qué atacar primero. P0, P1 y P2 ya están cerrados y pusheados (219/219 tests pasan, verificado con smoke test real en cada bloque). P3 se revisó formalmente una segunda vez antes de cerrar el review completo — mismo criterio que S3-05 en la auditoría original (aceptar riesgo bajo, documentar, no tocar código sin necesidad real). Retomar solo si cambia el contexto: targets WinRM problemáticos frecuentes, o un despliegue multi-worker planeado.
+
 [](https://github.com/vperezguzman66/vulnapp#vulnapp-v240)
 
 Aplicación API modular para **detectar vulnerabilidades (CVE)** en servidores, gestionar el ciclo de vida de la remediación y colectar inventario remoto de forma automática y programada.
