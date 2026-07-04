@@ -1,0 +1,291 @@
+{
+  "nodes": [
+    {
+      "id": "bae4cf625c15b342",
+      "type": "text",
+      "x": 1200,
+      "y": -140,
+      "width": 500,
+      "height": 60,
+      "text": "# Mapa de Proyectos y Clientes"
+    },
+    {
+      "id": "1f3d6bee94cbe2a8",
+      "type": "group",
+      "x": 0,
+      "y": 0,
+      "width": 300,
+      "height": 550,
+      "label": "Marcos / Diego — Fábrica Marcos Zarzar",
+      "color": "2"
+    },
+    {
+      "id": "0f283de02ada7ef0",
+      "type": "file",
+      "x": 20,
+      "y": 50,
+      "width": 260,
+      "height": 100,
+      "file": "Fábrica Marcos Zarzar/Ferretería Sistema de Gestión.md"
+    },
+    {
+      "id": "5f83860fb01d7865",
+      "type": "file",
+      "x": 20,
+      "y": 170,
+      "width": 260,
+      "height": 100,
+      "file": "Fábrica Marcos Zarzar/Fábrica Precios.md"
+    },
+    {
+      "id": "e3f29410c913db84",
+      "type": "file",
+      "x": 20,
+      "y": 290,
+      "width": 260,
+      "height": 100,
+      "file": "Fábrica Marcos Zarzar/Web Scrapping.md"
+    },
+    {
+      "id": "48bbee1c1af50f89",
+      "type": "file",
+      "x": 20,
+      "y": 410,
+      "width": 260,
+      "height": 100,
+      "file": "Fábrica Marcos Zarzar/Bot - Mercado Libre.md"
+    },
+    {
+      "id": "e0f7b2b6aa72b327",
+      "type": "group",
+      "x": 400,
+      "y": 0,
+      "width": 300,
+      "height": 300,
+      "label": "René Medina",
+      "color": "5"
+    },
+    {
+      "id": "2779aa4f5ffb4f62",
+      "type": "file",
+      "x": 420,
+      "y": 50,
+      "width": 260,
+      "height": 100,
+      "file": "René Medina/BuscaGit.md"
+    },
+    {
+      "id": "a87842fff8f0f8c1",
+      "type": "file",
+      "x": 420,
+      "y": 170,
+      "width": 260,
+      "height": 100,
+      "file": "René Medina/Vulnerabilidades y Parches S.O..md"
+    },
+    {
+      "id": "bcac168d5c9f9eb9",
+      "type": "group",
+      "x": 800,
+      "y": 0,
+      "width": 300,
+      "height": 300,
+      "label": "Empresa propia — VP Services and Consulting SPA",
+      "color": "4"
+    },
+    {
+      "id": "cf6fa643a3078660",
+      "type": "file",
+      "x": 820,
+      "y": 50,
+      "width": 260,
+      "height": 100,
+      "file": "VP Services and Consulting SPA/Página Web.md"
+    },
+    {
+      "id": "743d024082facfb7",
+      "type": "file",
+      "x": 820,
+      "y": 170,
+      "width": 260,
+      "height": 100,
+      "file": "VP Services and Consulting SPA/Busca Medicamentos Web.md"
+    },
+    {
+      "id": "82af188db15f9f7a",
+      "type": "group",
+      "x": 1200,
+      "y": 0,
+      "width": 860,
+      "height": 550,
+      "label": "Proyectos propios / exploración — Temas Varios",
+      "color": "6"
+    },
+    {
+      "id": "26a91e417e90bb71",
+      "type": "file",
+      "x": 1220,
+      "y": 50,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/Agente Mercado Libre.md"
+    },
+    {
+      "id": "2ec6c3cc55ffbe30",
+      "type": "file",
+      "x": 1500,
+      "y": 50,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/BTC Monitor.md"
+    },
+    {
+      "id": "296f70e92f2167a9",
+      "type": "file",
+      "x": 1780,
+      "y": 50,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/Busca Job Agent Starte.md"
+    },
+    {
+      "id": "3f7b6eb35bdd0748",
+      "type": "file",
+      "x": 1220,
+      "y": 170,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/Control de Licencias de Software.md"
+    },
+    {
+      "id": "2a374e7352cdeff6",
+      "type": "file",
+      "x": 1500,
+      "y": 170,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/Busca Medicamentos.md"
+    },
+    {
+      "id": "c83883f1adab30e6",
+      "type": "file",
+      "x": 1780,
+      "y": 170,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/ProvDent.md"
+    },
+    {
+      "id": "141fe55825e9bb11",
+      "type": "file",
+      "x": 1220,
+      "y": 290,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/ProvDent-limpio.md"
+    },
+    {
+      "id": "d9b070f17e856261",
+      "type": "file",
+      "x": 1500,
+      "y": 290,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/ProvDent-limpio-historial.md"
+    },
+    {
+      "id": "ac1a5d7d90ee09a2",
+      "type": "file",
+      "x": 1780,
+      "y": 290,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/Protadult.md"
+    },
+    {
+      "id": "810f2538f39883f2",
+      "type": "file",
+      "x": 1220,
+      "y": 410,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/Control de Finanzas.md"
+    },
+    {
+      "id": "ae5bc4d34e05bf96",
+      "type": "file",
+      "x": 1500,
+      "y": 410,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/LimpiaPC.md"
+    },
+    {
+      "id": "6cc3a8a5b9be5454",
+      "type": "file",
+      "x": 1780,
+      "y": 410,
+      "width": 260,
+      "height": 100,
+      "file": "Temas Varios/Limpieza de Mac.md"
+    }
+  ],
+  "edges": [
+    {
+      "id": "ed50cdaf149e1673",
+      "fromNode": "c83883f1adab30e6",
+      "fromSide": "bottom",
+      "toNode": "141fe55825e9bb11",
+      "toSide": "top",
+      "label": "reinicio limpio"
+    },
+    {
+      "id": "2ef9a438c7335860",
+      "fromNode": "d9b070f17e856261",
+      "fromSide": "top",
+      "toNode": "c83883f1adab30e6",
+      "toSide": "bottom",
+      "label": "snapshot histórico intermedio"
+    },
+    {
+      "id": "d71c011e0f8c238a",
+      "fromNode": "2a374e7352cdeff6",
+      "fromSide": "left",
+      "toNode": "743d024082facfb7",
+      "toSide": "right",
+      "label": "reescritura para producción (Cloudflare Workers)"
+    },
+    {
+      "id": "0f4eb703158af1ed",
+      "fromNode": "cf6fa643a3078660",
+      "fromSide": "bottom",
+      "toNode": "743d024082facfb7",
+      "toSide": "top",
+      "label": "subdominio en vpservices-it.com"
+    },
+    {
+      "id": "2f7c4b4d899f6b2d",
+      "fromNode": "0f283de02ada7ef0",
+      "fromSide": "right",
+      "toNode": "48bbee1c1af50f89",
+      "toSide": "right",
+      "label": "bot ML de la ferretería"
+    },
+    {
+      "id": "a33aa173004ce4f4",
+      "fromNode": "0f283de02ada7ef0",
+      "fromSide": "right",
+      "toNode": "5f83860fb01d7865",
+      "toSide": "right",
+      "label": "gestión de precios de la ferretería"
+    },
+    {
+      "id": "a0c33e2d322946bd",
+      "fromNode": "e3f29410c913db84",
+      "fromSide": "right",
+      "toNode": "2a374e7352cdeff6",
+      "toSide": "left",
+      "label": "mismo patrón arquitectónico (FastAPI + scrapers)"
+    }
+  ]
+}
