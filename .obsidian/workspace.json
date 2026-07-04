@@ -11,10 +11,14 @@
             "id": "44bda6c9d55f8083",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Temas Varios/Crypto y Solana.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Crypto y Solana"
             }
           }
         ]
@@ -195,6 +199,7 @@
   },
   "active": "44bda6c9d55f8083",
   "lastOpenFiles": [
+    "Temas Varios/Crypto y Solana.md",
     "Temas Varios/Organización del Vault.md",
     "Mapa de Proyectos.canvas",
     "Proyectos.base",
@@ -230,7 +235,6 @@
     "Detalle Tareas.md",
     "Untitled Kanban.md",
     "2026-06-28.md",
-    "Fábrica Marcos Zarzar/Fábrica Precios.md",
     "René Medina"
   ]
 }

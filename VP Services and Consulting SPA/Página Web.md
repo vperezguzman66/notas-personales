@@ -633,3 +633,52 @@ Retoque adicional de Victor sobre el mismo home, fuera del flujo de Impeccable. 
 - Links sociales (LinkedIn, Instagram, TikTok, X) agregados a la columna de contacto, para llenar el espacio vacío que quedaba junto al formulario.
 - Texto del logo oculto en mobile (`<480px`) para evitar wrap junto al botón de menú.
 - Colores morado (`--secondary`) y verde (`--accent`) de la paleta —ya definidos pero casi sin uso— aplicados a íconos de servicio, stats del hero, badges del terminal y el ícono de WhatsApp, en vez de repetir el mismo cian en todo.
+
+## Revisión de tráfico y accesos (2026-07-04)
+
+El dashboard web de Cloudflare no cargaba (spinner colgado), así que se consultó directo la GraphQL Analytics API con el OAuth token de `wrangler` (cuenta `vperezguzman@gmail.com`, zona `vpservices-it.com`, zone tag `21fc198c3d0e3f85baa089a342821aa5`).
+
+### Últimos 7 días (2026-06-27 → 2026-07-04)
+
+| Fecha | Requests | Pageviews | Visitantes únicos | Amenazas bloqueadas |
+|---|---|---|---|---|
+| 06-27 | 548 | 51 | 45 | 5 |
+| 06-28 | 554 | 47 | 65 | 1 |
+| 06-29 | 117 | 35 | 42 | 0 |
+| 06-30 | 1,135 | 129 | 136 | 25 |
+| 07-01 | 2,094 | 150 | 141 | 14 |
+| 07-02 | 1,587 | 125 | 99 | 6 |
+| 07-03 | 506 | 111 | 95 | 0 |
+| 07-04 | 2,068 | 353 | 172 | 15 |
+| **Total** | **8,609** | **1,001** | **795** | **66** |
+
+Los picos de 06-30/07-01/07-02 coinciden con el deploy de las páginas de servicio y el trabajo de branding/SEO de esos días.
+
+### Hallazgo principal: la mayoría del tráfico es ruido de bots, no visitas reales
+
+De los 8,609 requests, **4,700 (55%) son 404**. El detalle de paths de las últimas 24h confirma escaneo automatizado de archivos de configuración expuestos:
+
+```
+/.env.save   /.env.bak   /config/.env   /app/.env   /.env.backup   /.env
+/.env.old   /.env.production   /.env.local   /env   /.git/HEAD   /.envrc
+/wp-config.php(.bak/.old/.save/~)
+```
+
+Casi todo proviene de **Países Bajos (NL)** — típico de infraestructura VPS/cloud usada para escaneo masivo, no visitantes reales. NL es el "país" con más tráfico de los 7 días (4,122 de 8,609 requests), lo que confirma que no es tráfico orgánico.
+
+**El hardening existente está funcionando:** todos estos intentos devuelven 404 limpio (bloqueo de rutas sensibles a nivel de Worker en `security.js`, ver sección "Seguridad implementada" arriba), sin exponer nada real.
+
+**Corrección tras revisar el detalle de los 403 (78 en 7 días):** se investigaron los `firewallEventsAdaptive` de la GraphQL Analytics API para las últimas 24h y se identificó una capa de protección adicional que no estaba documentada — **el Managed WAF ruleset de Cloudflare** bloquea estos intentos a nivel de borde, antes de que la request llegue al Worker (`source: firewallManaged`), independiente del bloqueo de rutas en `security.js`:
+
+- Los 3 casos de `/` bloqueados (2026-07-04 03:05:22 UTC) **no son 3 visitantes distintos**: son el mismo evento repetido 3 veces en el log (misma IP `216.126.227.187`, EE.UU., mismo segundo exacto), con User-Agent `Python/3.13 aiohttp/3.13.5` (un script, no un navegador). Bloqueado por la regla WAF administrada `2b5d06e3...`. No es "bot-fight mode" (esa fue una suposición inicial incorrecta) — es el Managed Ruleset de Cloudflare.
+- Los bloqueos de `/wp-config.php*` (12 de 15 eventos en 24h) usan la misma regla administrada (`9ce4e284...`), en dos ráfagas de segundos desde IPs de NL y FR — patrón típico de un escáner automatizado probando variantes del mismo archivo en lote.
+- **Dato nuevo:** de los 15 eventos de firewall en 24h, 6 apuntaban a `medicamentos.vpservices-it.com` (el proyecto `busca-medicamentos-web`), no a `vpservices-it.com`. Ambos subdominios comparten la misma zona DNS de Cloudflare (zone tag `21fc198c3d0e3f85baa089a342821aa5`), así que el mismo Managed WAF protege a los dos sitios por igual — el ruido de bots y su bloqueo es compartido entre ambos proyectos.
+
+Conclusión: nada preocupante, pero hay dos capas de defensa (WAF administrado de Cloudflare a nivel de zona + bloqueo de rutas en el Worker), no solo una, y protegen ambos subdominios del dominio, no solo este sitio.
+
+### Tráfico real (descontando bots)
+
+- **`/` (home)**: 277 requests con 200 en las últimas 24h — única página con tráfico real consistente.
+- **`/servicios/*` y `/api/*`**: **0 requests en las últimas 24h.** Ninguna visita a las páginas de servicio nuevas ni uso del formulario de contacto en ese período — consistente con el estado de indexación de GSC (ver sección arriba): las páginas recién están siendo descubiertas por Google, todavía sin tráfico orgánico.
+
+**Conclusión:** el sitio se comporta bien técnicamente (bloqueo de rutas sensibles al 100%), pero el tráfico real de personas sigue siendo bajo y concentrado en el home — coherente con que el SEO de las páginas de servicio está en etapa temprana. Nada alarmante en seguridad; la prioridad sigue siendo esperar a que Google termine de indexar el resto de las páginas (ver recheck programado para 2026-07-11).
