@@ -682,3 +682,43 @@ Conclusión: nada preocupante, pero hay dos capas de defensa (WAF administrado d
 - **`/servicios/*` y `/api/*`**: **0 requests en las últimas 24h.** Ninguna visita a las páginas de servicio nuevas ni uso del formulario de contacto en ese período — consistente con el estado de indexación de GSC (ver sección arriba): las páginas recién están siendo descubiertas por Google, todavía sin tráfico orgánico.
 
 **Conclusión:** el sitio se comporta bien técnicamente (bloqueo de rutas sensibles al 100%), pero el tráfico real de personas sigue siendo bajo y concentrado en el home — coherente con que el SEO de las páginas de servicio está en etapa temprana. Nada alarmante en seguridad; la prioridad sigue siendo esperar a que Google termine de indexar el resto de las páginas (ver recheck programado para 2026-07-11).
+
+## Auditoría de seguridad de código (2026-07-04)
+
+A raíz de la revisión de tráfico, se hizo una auditoría completa del código fuente (~1.200 líneas: `worker.js`, `router.js`, `access.js`, `handlers/contact.js`, `handlers/leads.js`, `rate-limiter.js`, `security.js`). Diseño general sólido: SQL parametrizado sin inyección, CSP estricta sin `unsafe-inline`, verificación JWT de Access correcta (RS256 + kid + iss + aud + exp), D1 aislada entre prod/staging.
+
+4 hallazgos, de mayor a menor severidad:
+
+1. **[Medio] `env.staging` públicamente accesible sin CAPTCHA ni Access** — corregido en PR #68 (ver detalle abajo).
+2. **[Bajo-medio] CSV/Formula injection en `GET /api/leads/export`** — corregido en PR #67.
+3. **[Bajo] Comparación de `LEADS_API_TOKEN` no es constant-time** — corregido en PR #69 (ver detalle abajo).
+4. **[Bajo] Posible header injection vía `nombre` en el asunto del email** — corregido en PR #67.
+
+### Fixes aplicados — PR #67 (mergeado a producción, 2026-07-04)
+
+- `src/handlers/leads.js`: `csvCell()` ahora antepone `'` a celdas que empiezan con `=`, `+`, `-`, `@`, tab o CR antes del escapado de comillas.
+- `src/handlers/contact.js`: el `subject` del email usa una versión de `nombre` con `\r\n` reemplazados por espacio.
+- 2 tests de regresión agregados (`tests/router.e2e.test.js`, `tests/contact.handler.test.js`) — suite completa: 82/82 verdes.
+- Merge commit `c262650`, desplegado a producción.
+
+### Fix aplicado — PR #68 (mergeado, 2026-07-04)
+
+`env.staging` tenía `ADMIN_ACCESS_MODE=off` y servía `/admin/leads` (200, HTML del panel) y `/api/leads*` sin ninguna autenticación en `https://vpservices-web-staging.vperezguzman.workers.dev` — URL `workers.dev` públicamente alcanzable, sin CAPTCHA ni Access reales configurados para ese hostname.
+
+**Fix:** cambiar `ADMIN_ACCESS_MODE` a `"header"` y `ADMIN_ACCESS_REQUIRE_JWT` a `"true"` en `wrangler.jsonc` para staging. Como `ADMIN_ACCESS_TEAM_DOMAIN`/`ADMIN_ACCESS_AUD` siguen vacíos (no hay una app de Access real protegiendo ese hostname), `evaluateAdminAccess` ahora falla cerrado (403) de forma incondicional — el chequeo de "configuración incompleta" se dispara antes de validar cualquier header, así que ni siquiera falsificando `cf-access-authenticated-user-email` + un JWT forjado se puede entrar (verificado en vivo, y cubierto con un test nuevo en `tests/access.test.js`).
+
+Verificado en vivo tras el deploy: `/admin/leads` pasó de 200 a 403, `/api/leads` de 503 a 403, spoof de header sigue en 403, `/api/health` y `/api/contact` sin cambios. 83/83 tests. Merge commit `f63cb8f`.
+
+**Nota:** esto significa que si en algún momento se quiere probar el panel de leads en staging de verdad, hay que configurar una app de Cloudflare Access real para el hostname `workers.dev` (o darle un dominio propio) — decisión pendiente para cuando haga falta, no urgente.
+
+### Fix aplicado — PR #69 (mergeado, 2026-07-04)
+
+`_authenticateLeads` comparaba el Bearer token con `!==` (comparación normal de string), en teoría susceptible a timing attack byte a byte sobre la red. Riesgo real bajo (el token tiene 288 bits de entropía), pero se corrigió como buena práctica.
+
+**Fix:** nueva función `constantTimeEqual()` en `src/helpers.js` — hashea ambos valores con SHA-256 (evita también filtrar diferencias de longitud) y compara los digests con `crypto.timingSafeEqual` de `node:crypto` (disponible en el Worker vía el flag `nodejs_compat` ya activo). Usada en `src/handlers/leads.js` en vez de la comparación directa.
+
+4 tests nuevos en `tests/helpers.test.js` (iguales, distintos, longitudes distintas, valores vacíos/undefined). Build + `wrangler deploy --dry-run` confirmaron que el import de `node:crypto` bundlea bien. 87/87 tests. Merge commit y deploy automático a staging + producción vía el pipeline `deploy.yml` (dispara solo con CI verde en `main`) — verificado sano en producción tras el deploy (`/api/health`, `/api/contact-config`).
+
+### Cierre de la auditoría
+
+Los 4 hallazgos del 2026-07-04 quedaron corregidos y desplegados el mismo día: PR #67 (CSV injection + header injection), PR #68 (staging sin Access), PR #69 (comparación constant-time). Sin pendientes de seguridad abiertos de esta auditoría.

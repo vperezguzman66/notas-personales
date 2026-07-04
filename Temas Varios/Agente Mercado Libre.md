@@ -3,8 +3,8 @@ proyecto: "price_monitor"
 ruta: "price_monitor"
 cliente: "Propio"
 stack: "Python + Playwright"
-estado: "Funcional — fix logs duplicados, cron vía crontab"
-ultimo_cambio: 2026-07-03
+estado: "Funcional — credencial hardcodeada corregida y purgada del historial"
+ultimo_cambio: 2026-07-04
 ---
 
 He creado un agente en que permite enviarme un correo cuando baje de precio.
@@ -160,4 +160,12 @@ Solución: se quitó el `StreamHandler`, dejando solo el `FileHandler`. Verifica
 
 Nota: el repo sí tiene git con remoto privado (a diferencia de lo que decía la documentación general del workspace). El cron corre por `crontab -l`, no por PM2 — el `ecosystem.config.js` existe pero no está cargado en PM2 actualmente.
 
-Pendiente (no resuelto aún, decisión del usuario): `GMAIL_APP_PASSWORD` está hardcodeado en texto plano en `price_monitor.py` y presente en el historial de git desde el primer commit. El repo es privado, pero sigue siendo una credencial viva en control de versiones — recomendable moverla a `.env` (gitignored) y rotarla.
+### Fix de credencial hardcodeada (2026-07-04)
+
+`GMAIL_APP_PASSWORD` estaba hardcodeado en texto plano en `price_monitor.py` desde el primer commit. Corregido:
+
+- **Código:** `price_monitor.py` ahora lee `GMAIL_USER`/`GMAIL_APP_PASSWORD`/`NOTIFY_EMAIL` desde `.env` (gitignored) vía `python-dotenv`; falla rápido con mensaje claro si faltan. `.env.example` documenta las variables sin exponer valores reales. `requirements.txt` actualizado. Verificado en vivo: ejecución manual con las nuevas env vars, log limpio, mismo comportamiento. Commit `fix: mover credenciales de Gmail a variables de entorno`.
+- **Historial de git purgado:** se usó `git filter-repo --replace-text` para reemplazar la contraseña literal (`uesf kdnm fogs qqpc`) por un placeholder en **todos** los commits pasados (6 commits reescritos, hashes cambiados). Verificado con `git log --all -p | grep` (0 resultados) y contra el remoto en GitHub vía API (contenido del commit inicial ya no tiene la contraseña real). Force-push a `origin/main` aplicado.
+- Backup del `.git` original antes de la purga en `/tmp/price_monitor-git-backup-20260704185648` (borrar cuando se confirme que todo está bien).
+
+**Pendiente (decisión del usuario, sin urgencia técnica):** rotar la App Password en https://myaccount.google.com/apppasswords — la que quedó en `.env` local sigue siendo la misma que estuvo expuesta en el historial. El código ya está listo para usar una nueva sin tocar nada más: solo hay que reemplazar el valor en `.env`.
