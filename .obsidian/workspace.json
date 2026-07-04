@@ -11,13 +11,17 @@
             "id": "44bda6c9d55f8083",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "canvas",
               "state": {
-                "file": "Proyectos.base",
-                "viewName": "Todos los proyectos"
+                "file": "Mapa de Proyectos.canvas",
+                "viewState": {
+                  "x": 1690,
+                  "y": 215,
+                  "zoom": 0
+                }
               },
-              "icon": "lucide-table",
-              "title": "Proyectos"
+              "icon": "lucide-layout-dashboard",
+              "title": "Mapa de Proyectos"
             }
           }
         ]
@@ -192,11 +196,13 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
-      "obsidian-kanban:Create new board": false
+      "obsidian-kanban:Create new board": false,
+      "obsidian42-brat:BRAT": false
     }
   },
   "active": "44bda6c9d55f8083",
   "lastOpenFiles": [
+    "Proyectos.base",
     "Mapa de Proyectos.canvas",
     "Temas Varios/Limpieza de Mac.md",
     "Temas Varios/LimpiaPC.md",
@@ -207,7 +213,6 @@
     "Temas Varios/ProvDent-limpio.md",
     "Temas Varios/ProvDent.md",
     "Fábrica Marcos Zarzar/Web Scrapping.md",
-    "Proyectos.base",
     "Proyectos.base.tmp.724.bf1c4c2341f6",
     "Temas Varios/Busca Job Agent Starte.md.tmp.724.b3801f03f457",
     "VP Services and Consulting SPA/Busca Medicamentos Web.md.tmp.724.27dda2b0d0c5",
