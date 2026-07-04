@@ -2,6 +2,8 @@ Comparador de precios de medicamentos en las farmacias de cadena de Chile: **Sal
 
 Repo en GitHub: https://github.com/vperezguzman66/busca-medicamentos
 
+**Esta es la versión local (Python/FastAPI).** También existe una versión reescrita en Cloudflare Workers, en producción con login propio en `medicamentos.vpservices-it.com` — ver [[Busca Medicamentos Web]].
+
 [[Varios]]
 
 ## Por qué existe
