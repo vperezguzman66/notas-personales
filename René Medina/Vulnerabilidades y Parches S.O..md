@@ -1,3 +1,12 @@
+---
+proyecto: "vulnapp"
+ruta: "Proyectos/vulnapp"
+cliente: "René Medina"
+stack: "Python + FastAPI"
+estado: "Activo — sprint S4 en progreso (scheduler, notificaciones)"
+ultimo_cambio: 2026-06-15
+---
+
 [[Solicitudes de Software]]
 # VulnApp V2.4.0
 

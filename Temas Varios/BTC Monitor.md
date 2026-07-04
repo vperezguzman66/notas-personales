@@ -1,3 +1,12 @@
+---
+proyecto: "btc-monitor"
+ruta: "Proyectos/btc-monitor"
+cliente: "Propio"
+stack: "React + Vite"
+estado: "Funcional — Stop Loss / Take Profit simulados por posición"
+ultimo_cambio: 2026-06-19
+---
+
 [[Varios]]
 # Crypto Monitor ₿
 

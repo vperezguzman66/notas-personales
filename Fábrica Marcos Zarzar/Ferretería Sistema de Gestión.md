@@ -1,3 +1,12 @@
+---
+proyecto: "Ferreteria"
+ruta: "Ferreteria"
+cliente: "Marcos / Diego"
+stack: "Electron + React + TypeScript + SQLite"
+estado: "Activo — módulo comercial completo, hardening v3"
+ultimo_cambio: 2026-06-26
+---
+
 [[Marcos - Diego]]
 
 Aplicación de escritorio para gestión de ventas, productos, costos y clientes en una ferretería chilena. Construida con Electron + React + SQLite, funciona completamente offline.

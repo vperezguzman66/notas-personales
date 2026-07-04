@@ -11,14 +11,13 @@
             "id": "44bda6c9d55f8083",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "bases",
               "state": {
-                "file": "Fábrica Marcos Zarzar/Web Scrapping.md",
-                "mode": "source",
-                "source": false
+                "file": "Proyectos.base",
+                "viewName": "Todos los proyectos"
               },
-              "icon": "lucide-file",
-              "title": "Web Scrapping"
+              "icon": "lucide-table",
+              "title": "Proyectos"
             }
           }
         ]
@@ -198,6 +197,18 @@
   },
   "active": "44bda6c9d55f8083",
   "lastOpenFiles": [
+    "Temas Varios/Limpieza de Mac.md",
+    "Temas Varios/LimpiaPC.md",
+    "Temas Varios/Control de Finanzas.md",
+    "Temas Varios/Control de Finanzas.md.tmp.724.3ef2389831a3",
+    "Temas Varios/Protadult.md",
+    "Temas Varios/ProvDent-limpio-historial.md",
+    "Temas Varios/ProvDent-limpio.md",
+    "Temas Varios/ProvDent.md",
+    "Fábrica Marcos Zarzar/Web Scrapping.md",
+    "Proyectos.base",
+    "Proyectos.base.tmp.724.bf1c4c2341f6",
+    "Temas Varios/Busca Job Agent Starte.md.tmp.724.b3801f03f457",
     "VP Services and Consulting SPA/Busca Medicamentos Web.md.tmp.724.27dda2b0d0c5",
     "VP Services and Consulting SPA/Busca Medicamentos Web.md",
     "Temas Varios/Busca Medicamentos.md.tmp.724.8618ceddaed9",
@@ -218,21 +229,9 @@
     "Temas Varios/Varios.md",
     "Detalle Tareas.md",
     "Untitled Kanban.md",
-    "Fábrica Marcos Zarzar/Web Scrapping.md",
     "2026-06-28.md",
     "Fábrica Marcos Zarzar/Fábrica Precios.md",
     "Fábrica Marcos Zarzar/Marcos - Diego.md",
-    "Fábrica Marcos Zarzar/Ferretería Sistema de Gestión.md",
-    "René Medina/BuscaGit.md",
-    "René Medina",
-    "Fábrica Marcos Zarzar",
-    "Temas Varios",
-    "Varios",
-    "VP Services and Consulting SPA",
-    "Welcome.md",
-    "Diario/2026-06-24.md",
-    "Diario",
-    "🏠 Inicio.md",
-    "Recursos/Plantillas/Sesión Claude.md"
+    "René Medina"
   ]
 }

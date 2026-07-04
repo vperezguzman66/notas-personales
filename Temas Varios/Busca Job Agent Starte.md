@@ -1,3 +1,12 @@
+---
+proyecto: "busca-job"
+ruta: "Proyectos/busca-job"
+cliente: "Propio"
+stack: "Python"
+estado: "Funcional — filtro de idioma español añadido"
+ultimo_cambio: 2026-06-22
+---
+
 [[Varios]]
 [](https://github.com/vperezguzman66/busca-job/blob/main/README.md#busca-job-agent-starter)
 

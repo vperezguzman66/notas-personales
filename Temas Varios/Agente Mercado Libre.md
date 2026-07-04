@@ -1,3 +1,12 @@
+---
+proyecto: "price_monitor"
+ruta: "price_monitor"
+cliente: "Propio"
+stack: "Python + Playwright"
+estado: "Funcional — fix logs duplicados, cron vía crontab"
+ultimo_cambio: 2026-07-03
+---
+
 He creado un agente en que permite enviarme un correo cuando baje de precio.
 El link en GitHub es el siguiente: https://github.com/vperezguzman66/price-monitor.git
 

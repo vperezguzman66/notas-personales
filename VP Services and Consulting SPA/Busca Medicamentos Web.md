@@ -1,3 +1,12 @@
+---
+proyecto: "busca-medicamentos-web"
+ruta: "Proyectos/busca-medicamentos-web"
+cliente: "VP Services (propio)"
+stack: "Cloudflare Workers + D1 + Browser Rendering"
+estado: "Desplegado en producción (medicamentos.vpservices-it.com)"
+ultimo_cambio: 2026-07-03
+---
+
 Versión en producción de "Busca Medicamentos" (`Proyectos/busca-medicamentos`, la app Python local) — reescrita completa a Cloudflare Workers para publicarla en `medicamentos.vpservices-it.com`, con login propio restringido a usuarios permitidos.
 
 Repo en GitHub (privado): https://github.com/vperezguzman66/busca-medicamentos-web

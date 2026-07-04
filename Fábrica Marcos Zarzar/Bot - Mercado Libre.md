@@ -1,3 +1,12 @@
+---
+proyecto: "ml-bot"
+ruta: "Proyectos/ml-bot"
+cliente: "Marcos / Diego"
+stack: "Python + FastAPI + SQLite"
+estado: "Activo — hardening de seguridad reciente"
+ultimo_cambio: 2026-07-03
+---
+
 [[Marcos - Diego]]
 
 ## Estado (2026-07-03)

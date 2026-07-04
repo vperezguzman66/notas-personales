@@ -1,3 +1,12 @@
+---
+proyecto: "vpservices-web"
+ruta: "Proyectos/vpservices-web"
+cliente: "VP Services (propio)"
+stack: "Cloudflare Workers + D1"
+estado: "Desplegado — segunda pasada de auditoría de performance/seguridad"
+ultimo_cambio: 2026-06-24
+---
+
 Landing corporativa + formulario de contacto en Cloudflare Workers, con backend robusto, trazabilidad de leads y hardening de seguridad en producción.
 
 [[Página Web]]

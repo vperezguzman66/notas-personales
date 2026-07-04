@@ -1,3 +1,12 @@
+---
+proyecto: "buscagit"
+ruta: "Proyectos/buscagit"
+cliente: "René Medina"
+stack: "React + Vite + Express + Electron"
+estado: "Activo — proxy hardening y modularización"
+ultimo_cambio: 2026-06-17
+---
+
 [[Solicitudes de Software]]
 
 App para buscar texto en código público de **GitHub y GitLab**, agrupar los resultados por lenguaje/extensión y guardarlos como `.txt`. El frontend está hecho en **React + Vite** y habla con un **proxy backend en Express** que guarda y usa los tokens en el servidor, nunca en el navegador. Se puede ejecutar como web local o como **app de escritorio** con Electron para macOS, Windows y Linux.

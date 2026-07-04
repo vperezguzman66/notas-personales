@@ -1,3 +1,12 @@
+---
+proyecto: "license-control"
+ruta: "Proyectos/license-control"
+cliente: "Propio"
+stack: "Electron + React + SQLite"
+estado: "Completo — fases 1+2+3 cerradas, 146 tests"
+ultimo_cambio: 2026-06-26
+---
+
 [[Varios]]
 # LicenseControl
 

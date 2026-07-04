@@ -1,3 +1,11 @@
+---
+proyecto: "fabrica-precios"
+ruta: "Proyectos/Fabrica/fabrica-precios"
+cliente: "Marcos / Diego"
+stack: "Next.js + Prisma + TypeScript"
+estado: "Activo — exportación a Excel recién añadida"
+ultimo_cambio: 2026-06-24
+---
 
 Fabrica Precios — Lista de Precios Ferretería Marcos
 

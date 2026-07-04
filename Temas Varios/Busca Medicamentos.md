@@ -1,3 +1,12 @@
+---
+proyecto: "busca-medicamentos"
+ruta: "Proyectos/busca-medicamentos"
+cliente: "Propio"
+stack: "Python + FastAPI + httpx + Playwright"
+estado: "Activo — resultados progresivos SSE, promociones"
+ultimo_cambio: 2026-07-03
+---
+
 Comparador de precios de medicamentos en las farmacias de cadena de Chile: **SalcoBrand**, **Cruz Verde**, **Farmacias Ahumada** y **Doctor Simi**.
 
 Repo en GitHub: https://github.com/vperezguzman66/busca-medicamentos

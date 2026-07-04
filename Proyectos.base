@@ -1,0 +1,43 @@
+filters:
+  not:
+    - 'proyecto.isEmpty()'
+
+properties:
+  proyecto:
+    displayName: "Proyecto"
+  ruta:
+    displayName: "Ruta"
+  cliente:
+    displayName: "Cliente"
+  stack:
+    displayName: "Stack"
+  estado:
+    displayName: "Estado"
+  ultimo_cambio:
+    displayName: "Último cambio"
+  file.folder:
+    displayName: "Carpeta del vault"
+
+views:
+  - type: table
+    name: "Todos los proyectos"
+    groupBy:
+      property: cliente
+      direction: ASC
+    order:
+      - proyecto
+      - stack
+      - estado
+      - ultimo_cambio
+      - file.folder
+
+  - type: table
+    name: "Por último cambio"
+    order:
+      - proyecto
+      - cliente
+      - estado
+      - ultimo_cambio
+    groupBy:
+      property: ultimo_cambio
+      direction: DESC

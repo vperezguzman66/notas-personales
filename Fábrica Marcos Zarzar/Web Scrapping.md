@@ -1,3 +1,11 @@
+---
+proyecto: "buscaprecios"
+ruta: "Proyectos/buscaprecios"
+cliente: "Marcos / Diego"
+stack: "Python + FastAPI + frontend"
+estado: "Activo — fix scraper Imperial (IDs de categoría y precio)"
+ultimo_cambio: 2026-07-03
+---
 
 En reunión con [[Marcos - Diego]] se generó la necesidad de crear esta aplicación que permita extraer los precios de productos que existen en la competencia, para ello se genero una app que está en el repositorio en GitHub con el link https://github.com/vperezguzman66/buscaprecios.git
 
