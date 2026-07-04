@@ -11,17 +11,10 @@
             "id": "44bda6c9d55f8083",
             "type": "leaf",
             "state": {
-              "type": "canvas",
-              "state": {
-                "file": "Mapa de Proyectos.canvas",
-                "viewState": {
-                  "x": 1810,
-                  "y": 300,
-                  "zoom": -1.5
-                }
-              },
-              "icon": "lucide-layout-dashboard",
-              "title": "Mapa de Proyectos"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -202,8 +195,9 @@
   },
   "active": "44bda6c9d55f8083",
   "lastOpenFiles": [
-    "Proyectos.base",
+    "Temas Varios/Organización del Vault.md",
     "Mapa de Proyectos.canvas",
+    "Proyectos.base",
     "Temas Varios/Limpieza de Mac.md",
     "Temas Varios/LimpiaPC.md",
     "Temas Varios/Control de Finanzas.md",
