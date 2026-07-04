@@ -3,24 +3,21 @@ proyecto: "vpservices-web"
 ruta: "Proyectos/vpservices-web"
 cliente: "VP Services (propio)"
 stack: "Cloudflare Workers + D1"
-estado: "Desplegado — segunda pasada de auditoría de performance/seguridad"
-ultimo_cambio: 2026-06-24
+estado: "Desplegado — SEO en curso, 1 de 4 páginas de servicio ya indexada"
+ultimo_cambio: 2026-07-04
 ---
 
 Landing corporativa + formulario de contacto en Cloudflare Workers, con backend robusto, trazabilidad de leads y hardening de seguridad en producción.
 
 [[Página Web]]
 
-## Estado y pendientes (2026-07-02)
+## Estado y pendientes (2026-07-04)
 
 Todo el trabajo hasta el PR #66 (`fix(diseño): equilibra contacto y diversifica acentos de color`) está mergeado a `main` y pusheado a `origin/main` — sin cambios locales pendientes de subir.
 
-**Pendiente — tres rutinas en la nube programadas para 2026-07-04** (ver detalle en la sección "Google Search Console" más abajo):
-- `14:00 UTC` — chequeo de indexación GSC de las 4 páginas de servicio nuevas + home.
-- `14:15 UTC` — revocación del OAuth temporal (`vpservices-search-console`) creado para ese chequeo.
-- `14:30 UTC` — recordatorio agregado el 2026-07-02 (`trig_01XYXr7heBMCgLcARbTEBxWG`): a diferencia de las dos anteriores, esta **siempre** manda `PushNotification`, avisando que ya pasaron las otras dos y que toca revisar el resultado en https://claude.ai/code/routines/.
+Las tres rutinas programadas para hoy (2026-07-04) ya se ejecutaron — resultados y detalle completo en la sección "Google Search Console" más abajo. Resumen: 1 de 4 páginas nuevas ya indexada, 2 en cola normal de descubrimiento, 1 (`soporte-y-mantenimiento`) aún no descubierta por Google. El OAuth temporal quedó revocado y confirmado muerto.
 
-Las dos primeras avisan solo si algo falla; la tercera avisa siempre, justamente para no depender de revisar el dashboard por cuenta propia.
+**Pendiente — 2026-07-11:** rutina de recordatorio (`trig_016zg6z5kvRiMKuLs9U1JYpb`) para revisar manualmente si `soporte-y-mantenimiento` ya fue descubierta/indexada (ver detalle abajo).
 
 ## Estado final implementado (2026-06)
 
@@ -538,6 +535,32 @@ Para verificar en unos días si Google indexó las 4 páginas nuevas, se creó i
 - Ambas rutinas tienen notificación push (Claude Code / Remote Control) habilitada, pero **solo la disparan si algo falla** (refresh token rechazado, revoke que no invalidó el token de verdad). Si todo sale bien, no avisan proactivamente — el reporte queda en el dashboard de rutinas.
 - Fallback manual si el revoke automático falla: <https://myaccount.google.com/permissions> con la cuenta `vperezguzman@gmail.com`, buscar "VP Services Search Console Checker" y quitar el acceso.
 - Documentación técnica detallada en el repo: `docs/ops/gsc-indexing-check.md`.
+
+### Resultados del chequeo (2026-07-04)
+
+Las tres rutinas corrieron según lo programado y se revisaron en el dashboard (https://claude.ai/code/routines/):
+
+| URL | coverageState | Verdict |
+|---|---|---|
+| `/servicios/consultoria-ti` | Submitted and indexed | ✅ PASS |
+| `/servicios/desarrollo-de-software` | Discovered, aún no indexada | Neutral (normal a 3 días) |
+| `/servicios/inteligencia-artificial` | Discovered, aún no indexada | Neutral (normal a 3 días) |
+| `/servicios/soporte-y-mantenimiento` | **URL unknown to Google** (no descubierta) | Neutral, rezagada |
+| `/` (home, baseline) | Submitted and indexed | ✅ PASS |
+
+Sitemap: 7 submitted / 0 indexed (métrica que va rezagada respecto al estado real por URL, no es señal de alarma).
+
+Evaluación de la rutina: "on track, pero desparejo" — 1 de 4 páginas nuevas indexada a los 3 días es buena señal temprana; el caso a vigilar es `soporte-y-mantenimiento`, que ni siquiera fue descubierta (a diferencia de las otras 3 que sí, aunque no indexadas aún).
+
+La revocación del OAuth (10:15 AM) se confirmó exitosa: revoke devolvió HTTP 200, y el intento posterior de refrescar el token con el mismo `refresh_token` devolvió `invalid_grant` — credenciales confirmadas muertas. El recordatorio de las 10:30 AM se disparó según lo esperado.
+
+### Pendiente — recheck de `soporte-y-mantenimiento` (2026-07-11)
+
+Se creó una rutina one-shot (`trig_016zg6z5kvRiMKuLs9U1JYpb`, 2026-07-11 10:00 AM GMT-4) para recordar revisar manualmente el estado de esa URL en Search Console.
+
+**Por qué es manual y no vía API:** al intentar generar credenciales OAuth nuevas para automatizar este recheck (usando el mismo client_id del proyecto `vpservices-search-console` vía OAuth Playground), Google rechazó la autorización con **Error 400: redirect_uri_mismatch** — el OAuth Client no tiene registrado `https://developers.google.com/oauthplayground` como redirect URI válido (el refresh_token original de esta app se generó por otra vía, no por el Playground).
+
+Para automatizar el próximo chequeo por API haría falta: entrar a <https://console.cloud.google.com/apis/credentials?project=firm-streamer-501200-f5>, abrir el OAuth Client existente y agregar `https://developers.google.com/oauthplayground` como Authorized redirect URI — luego se puede regenerar un refresh_token vía el Playground con scope `webmasters.readonly`, y crear una rutina calcada a la del 2026-07-04. Mientras tanto, el recheck del 11 de julio queda como recordatorio manual.
 
 ## Productos propios publicados en la web (2026-07-01)
 
