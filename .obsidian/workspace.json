@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "9a60a887d1e1dc88",
+        "id": "7a090d0f4dd2f247",
         "type": "tabs",
         "children": [
           {
-            "id": "44bda6c9d55f8083",
+            "id": "0681bc7de66c2d69",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ]
@@ -74,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 265.5
+    "width": 276.5110321044922
   },
   "right": {
     "id": "57c8438409e49ab7",
@@ -193,14 +193,16 @@
       "obsidian42-brat:BRAT": false
     }
   },
-  "active": "44bda6c9d55f8083",
+  "active": "0681bc7de66c2d69",
   "lastOpenFiles": [
+    "Detalle Tareas.md",
+    "Mapa de Proyectos.canvas",
+    "Proyectos.base",
+    "Untitled.md",
     "Temas Varios/Crypto y Solana.md",
     "Temas Varios/Agente Mercado Libre.md.tmp.1405.cae1aef2c2a2",
     "VP Services and Consulting SPA/Página Web.md.tmp.1405.8d89a0857718",
     "Temas Varios/Organización del Vault.md",
-    "Mapa de Proyectos.canvas",
-    "Proyectos.base",
     "Temas Varios/Limpieza de Mac.md",
     "Temas Varios/LimpiaPC.md",
     "Temas Varios/Control de Finanzas.md",
@@ -228,8 +230,6 @@
     "René Medina/Vulnerabilidades y Parches S.O..md",
     "VP Services and Consulting SPA/Página Web.md",
     "Diario/2026-07-01.md",
-    "Temas Varios/Varios.md",
-    "Detalle Tareas.md",
-    "Untitled Kanban.md"
+    "Temas Varios/Varios.md"
   ]
 }
