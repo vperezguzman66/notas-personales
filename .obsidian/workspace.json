@@ -25,10 +25,14 @@
             "id": "bae7e3daa5c74cfc",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "AppSeguros/plan_de_implementacion.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "plan_de_implementacion"
             }
           }
         ],
@@ -55,7 +59,7 @@
                 "autoReveal": true
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "Explorador de archivos"
             }
           },
           {
@@ -196,20 +200,27 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false,
       "obsidian-git:Open Git source control": false,
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false,
       "obsidian-kanban:Create new board": false,
       "obsidian42-brat:BRAT": false
     }
   },
   "active": "bae7e3daa5c74cfc",
   "lastOpenFiles": [
+    "AppSeguros/CHANGELOG.md",
+    "AppSeguros/plan_de_implementacion.md",
+    "Detalle Tareas.md",
+    "AppSeguros",
+    "Mapa de Proyectos.canvas",
+    "Proyectos.base",
+    "VP Services and Consulting SPA/Polizas Web.md",
     "Fábrica Marcos Zarzar/SAP Business One.md",
     "Fábrica Marcos Zarzar/Motor de Precios - SAP.md",
     "Fábrica Marcos Zarzar/Marcos - Diego.md",
@@ -218,10 +229,6 @@
     "Diario/2026-07-08.md",
     "Fábrica Marcos Zarzar/Web Scrapping.md",
     "Temas Varios/Agente Mercado Libre.md",
-    "VP Services and Consulting SPA/Polizas Web.md",
-    "Detalle Tareas.md",
-    "Mapa de Proyectos.canvas",
-    "Proyectos.base",
     "Temas Varios/Crypto y Solana.md",
     "Temas Varios/Agente Mercado Libre.md.tmp.1405.cae1aef2c2a2",
     "VP Services and Consulting SPA/Página Web.md.tmp.1405.8d89a0857718",
@@ -240,12 +247,9 @@
     "VP Services and Consulting SPA/Busca Medicamentos Web.md",
     "Temas Varios/Busca Medicamentos.md.tmp.724.8618ceddaed9",
     "Temas Varios/Busca Medicamentos.md.tmp.724.313db7cafb57",
-    "Temas Varios/Busca Medicamentos.md.tmp.724.63f4e7225c4b",
     "Temas Varios/Busca Medicamentos.md",
     "René Medina/Solicitudes de Software.md",
     "Temas Varios/BTC Monitor.md",
-    "Temas Varios/Busca Job Agent Starte.md",
-    "Temas Varios/Control de Licencias Pyme.md",
-    "Temas Varios/Control de Licencias de Software.md"
+    "Temas Varios/Busca Job Agent Starte.md"
   ]
 }
