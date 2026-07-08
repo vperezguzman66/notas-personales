@@ -3,8 +3,20 @@ proyecto: "buscaprecios"
 ruta: "Proyectos/buscaprecios"
 cliente: "Marcos / Diego"
 stack: "Python + FastAPI + frontend"
-estado: "Activo — fix scraper Imperial (IDs de categoría y precio)"
-ultimo_cambio: 2026-07-03
+estado: "Desplegado en producción (buscaprecios-web) además de la versión local"
+ultimo_cambio: 2026-07-08
+---
+
+## Estado (2026-07-08)
+
+Se creó `Proyectos/buscaprecios-web`: reescritura completa a Cloudflare Workers + D1, desplegada en producción en **`buscaprecios.vpservices-it.com`**, con login propio (usuario/clave, sin Cloudflare Access). Replica el mismo patrón que `busca-medicamentos-web` (PBKDF2 + sesiones D1, rate limiting por Durable Object, caché KV, SSE progresivo). Los 4 scrapers (Easy, Homecenter, Construmart, Imperial) se portaron de Python/httpx a JavaScript/`fetch` manteniendo la misma lógica de parsing. No incluye MercadoLibre (requiere credenciales no configuradas) ni búsqueda en lote más allá de lo ya existente en la versión local (sí incluida). Usuario de producción creado: `dzarzar@zarzartex.com`. La versión local (`Proyectos/buscaprecios`, Python/FastAPI) sigue existiendo para desarrollo/pruebas. Repo: `github.com/vperezguzman66/buscaprecios-web` (privado).
+
+De paso se corrigió un bug real en la versión local: al buscar, la página se quedaba pegada en el spinner indefinidamente pese a que el backend respondía bien — la causa fue un *service worker* huérfano de otro proyecto que también corrió alguna vez en `localhost:8000`, interceptando las peticiones. Se agregó además `AbortController` + timeout de 30s en el frontend para que una búsqueda colgada muestre error en vez de spinner infinito.
+
+**Reset de clave (2026-07-08):** se generó una clave nueva para el usuario de producción `dzarzar@zarzartex.com` (UPDATE directo sobre D1 remoto vía `wrangler d1 execute --remote`, hash PBKDF2 con `hashPassword` de `src/auth.js`) y se guardó en 1Password. La clave en texto plano no se guarda en esta nota — está solo en 1Password.
+
+Nota de costo: las consultas puntuales de administración sobre D1 (SELECT/UPDATE vía `wrangler d1 execute --remote`) no generan cargo — el free tier de D1 incluye 5M lecturas/día y 100K escrituras/día, muy por encima de este tipo de uso ocasional.
+
 ---
 
 En reunión con [[Marcos - Diego]] se generó la necesidad de crear esta aplicación que permita extraer los precios de productos que existen en la competencia, para ello se genero una app que está en el repositorio en GitHub con el link https://github.com/vperezguzman66/buscaprecios.git
