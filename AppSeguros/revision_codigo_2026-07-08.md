@@ -136,10 +136,29 @@ El inicializador de `activeProfileId` vuelve a llamar `loadJSON('gestor_seguros_
 
 ## Estado (segunda revisión)
 
-Corregidos #1–#5 (2026-07-08). Verificado con `npm run build` y en navegador (Chrome DevTools) inyectando datos corruptos en `localStorage`. Pendientes: #6, #7 (plausibles, baja probabilidad hoy) y #8–#10 (consistencia/limpieza).
+Los 10 hallazgos corregidos (2026-07-08), en dos tandas. Verificado con `npm run build`, `oxlint` y en navegador (Chrome DevTools) inyectando datos de prueba en `localStorage` para cada escenario.
+
+**Tanda 1 — #1 a #5 (correctitud confirmada):**
 
 - **#1:** `App.jsx` ahora valida `activeProfileId` contra `profiles` reales al inicializar (en vez de confiar ciegamente en `localStorage`), y un `useEffect` se autocorrige al primer perfil válido si `activeProfileId` alguna vez queda huérfano. Probado inyectando un id inexistente y recargando: la app se autocorrigió a "Juan" en vez de quedar con el dashboard/lista vacíos.
 - **#2:** `loadJSON` (`src/utils/storage.js`) ahora acepta un validador de forma (`isValid`); `App.jsx` le pasa `Array.isArray` para `profiles`/`insurances`, así que un JSON válido pero mal formado (`"null"`, `"{}"`) cae al fallback en vez de romper `.find`/`.map` más adelante.
 - **#3:** nueva función `loadString` en `storage.js` (con su propio try/catch); `App.jsx` la usa para leer `activeProfileId` en vez de `localStorage.getItem` directo.
 - **#4:** `saveJSON`/`saveString` ahora retornan `true`/`false`; `App.jsx` mantiene un estado `storageError` que muestra un banner visible ("No se pudieron guardar los últimos cambios...") cuando cualquier guardado falla, en vez de fallar en silencio.
 - **#5:** `formatDate` (`src/utils/insurance.js`) retorna `'Fecha inválida'` si la fecha no parsea, en vez de dejar pasar el `"Invalid Date"` nativo en inglés. Probado inyectando un `endDate` corrupto: el campo "Vencimiento" ahora coincide en idioma y mensaje con el badge de la tarjeta.
+
+**Tanda 2 — #6 a #9 (plausibles + consistencia/limpieza):**
+
+- **#6:** `InsuranceForm.jsx` cambió `setPrice(insuranceToEdit.price || '')` por `setPrice(insuranceToEdit.price ?? '')` — un precio `0` legítimo ya no se muestra como campo vacío al editar. Probado inyectando un seguro con `price: 0` y abriendo su edición: el campo "Costo / Prima" muestra `0` en vez de quedar en blanco.
+- **#7:** `handleDeleteProfile` en `App.jsx` ahora calcula `remainingProfiles` primero y verifica `remainingProfiles.length === 0` (el resultado real del filtro), en vez de `profiles.length <= 1` de antemano — la guarda ya no depende de que todos los ids sean únicos.
+- **#8:** `CATEGORY_LABELS`/`CATEGORY_OPTIONS` centralizados en `src/utils/insurance.js`; `App.jsx` (dropdown de filtro), `InsuranceForm.jsx` (select de tipo) e `InsuranceCard.jsx` (badge) ahora comparten la misma fuente. Verificado en el DOM: las tres etiquetas para "SOAP" ya muestran el mismo texto ("SOAP (Auto Obligatorio)") en los tres lugares.
+- **#9:** Eliminado `formatUF` de `Dashboard.jsx` (código muerto, nunca se llamaba). Confirmado que el warning de `oxlint` sobre esta variable desapareció.
+
+## Fix UX: scroll interno en modales — 2026-07-08
+
+Bug encontrado durante las pruebas de la modularización (no parte de los 10 hallazgos de `/code-review`, detectado end-to-end en navegador): `.modal-overlay`/`.modal-content` (`src/styles/modal-form.css`) no tenía ningún mecanismo de scroll interno. En viewports bajos (probado a 500×480), el contenido del formulario "Agregar Seguro" desbordaba la altura de la ventana y los botones "Guardar"/"Cancelar" quedaban fuera del área visible, sin forma de alcanzarlos con scroll de página (el overlay es `position: fixed` sobre toda la ventana, así que no hay scroll de documento que ayude).
+
+**Fix:** se agregó `padding: 1.5rem` a `.modal-overlay` (aire respecto al borde de la ventana en pantallas chicas) y `max-height: 100%` + `overflow-y: auto` a `.modal-content`, de modo que el modal ahora scrollea internamente cuando su contenido excede el alto disponible.
+
+Verificado con `oxlint`, `npm run build` (CSS 10.94 kB → 10.99 kB) y prueba end-to-end en Chrome DevTools con viewport 500×480: se abrió el modal, se hizo scroll dentro de él (barra de scroll visible en el borde derecho del modal, no de la página), se llenaron los campos obligatorios y se guardó un seguro nuevo haciendo clic en "Guardar" — antes de este fix ese clic no era posible porque el botón quedaba fuera del viewport sin ningún elemento scrolleable que lo acercara.
+
+**Nota:** el hallazgo #10 (relectura redundante de `localStorage`) quedó resuelto como efecto colateral de la corrección de #1 — el nuevo inicializador de `activeProfileId` reutiliza la variable `profiles` ya calculada en vez de volver a llamar `loadJSON`.
