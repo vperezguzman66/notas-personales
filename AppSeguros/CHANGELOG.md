@@ -2,6 +2,15 @@
 
 Registro de cambios realizados en el desarrollo de la aplicación.
 
+## [Sin publicar]
+
+### Revisión de código — 2026-07-08
+Revisión de correctitud del primer commit (`/code-review`). 10 hallazgos, ver [[revision_codigo_2026-07-08]] para el detalle completo. Ninguno corregido aún.
+
+- **Bugs confirmados a corregir:** error de zona horaria en el cálculo de días restantes (afecta alertas de vencimiento), pagos "Pago Único" sumados como gasto recurrente, `JSON.parse` sin protección sobre `localStorage`, precio negativo sin validar, sin validar orden de fechas inicio/vencimiento.
+- **Bugs plausibles:** fecha de vencimiento inválida se muestra como "Vigente", colisión de IDs por doble clic al guardar, `handleDeleteProfile` depende solo de una guarda de UI, `localStorage.setItem` sin manejo de `QuotaExceededError`.
+- **Limpieza:** `formatCLP` y `getDaysRemaining` duplicadas entre `InsuranceCard.jsx` y `Dashboard.jsx`.
+
 ## [0.1.0] - 2026-07-08
 
 ### Añadido
