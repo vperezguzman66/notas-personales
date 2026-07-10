@@ -17,6 +17,17 @@ Estado (actualizado 2026-07-10): sin fondos para invertir y sin intención de in
 - **Flujo completo verificado con datos reales (2026-07-10):** análisis de NVDA combinando 5 chunks del RAG (riesgos de TSM, competencia AMD/TPU) con datos vivos de TradingView (precio $210.01, RSI 68.90 cerca de sobrecompra tras un rebote, EMA 204.43, rango de 100 barras -2.71% — tendencia de mediano plazo aún negativa pese al rebote). Propuesta "mantener" guardada, mostrada, y **aprobada explícitamente** con nota. El circuito completo (RAG + datos vivos + propuesta + aprobación humana + auditoría) funciona de punta a punta.
 - **Dashboard web local** (`npm run web`, `http://127.0.0.1:4100`, solo local — nunca expuesto a la red): pestañas de propuestas pendientes (aprobar/rechazar con botones), decididas, corpus indexado, y búsqueda semántica. Requirió un refactor previo (lógica de retrieval y propuestas movida a `search.js`/`proposals-store.js`, reutilizada por CLI y web). Deliberadamente **sin botón de "analizar"** — eso exigiría una API key propia de Anthropic y el MCP de TradingView no es alcanzable desde un servidor web normal; el análisis sigue siendo exclusivo del skill dentro de Claude Code. Probado en el navegador de punta a punta, incluyendo aprobar una propuesta real con un click.
 
+### Secuencia de uso
+
+Setup (`npm install` + `.env` con `VOYAGE_API_KEY`) es una sola vez. Después, el ciclo normal:
+
+1. **Ingest** — `npm run ingest`, cada vez que cambia algo en `corpus/` (no en cada análisis).
+2. **Analizar** — `/analizar-inversion <ticker>` dentro de una sesión de Claude Code abierta en el proyecto (requiere TradingView Desktop abierto para los datos vivos).
+3. **Propuesta guardada** — automático dentro del paso 2, queda como `pending`.
+4. **Decidir** — aprobar/rechazar por el dashboard web (`npm run web`) o por CLI (`npm run decide`).
+
+El ciclo vuelve al paso 2 para el siguiente ticker.
+
 ## Ángulo 1 — Invertir en el sector IA
 
 ### Empresas líderes (consenso julio 2026)
