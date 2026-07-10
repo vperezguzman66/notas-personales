@@ -39,10 +39,17 @@
             "id": "321de820b6c5fd4e",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Vista gráfica"
+              "type": "canvas",
+              "state": {
+                "file": "Mapa de Proyectos.canvas",
+                "viewState": {
+                  "x": 1050,
+                  "y": 165,
+                  "zoom": -1
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Mapa de Proyectos"
             }
           }
         ],
@@ -181,13 +188,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Reunión Marcos y Diego.md",
+                "file": "Mapa de Proyectos.canvas",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Reunión Marcos y Diego"
+              "title": "Esquema de Mapa de Proyectos"
             }
           },
           {
@@ -201,12 +208,11 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -222,7 +228,7 @@
       "obsidian42-brat:BRAT": false
     }
   },
-  "active": "321de820b6c5fd4e",
+  "active": "deae38a11ee8690b",
   "lastOpenFiles": [
     "Diario/2026-07-09.md",
     "Mascotas.md",
