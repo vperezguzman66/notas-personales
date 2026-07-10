@@ -31,6 +31,23 @@ Setup (`npm install` + `.env` con `VOYAGE_API_KEY`) es una sola vez. Después, e
 
 El ciclo vuelve al paso 2 para el siguiente ticker.
 
+### Cadencia de actualización del corpus
+
+Confusión común a evitar: actualizar el corpus **no** es lo mismo que revisar cómo está el
+mercado — eso lo resuelven los datos vivos de TradingView, siempre frescos, nunca guardados.
+El corpus es conocimiento lento (tesis, informes, riesgos estructurales), no cotización.
+
+Cuándo sí actualizarlo — por evento, no por calendario fijo:
+1. Se leyó algo nuevo que cambia una tesis.
+2. Se dispara la `invalidation` de una propuesta existente — para eso existe ese campo.
+3. Temporada de resultados trimestrales de los tickers relevantes.
+4. Un ticker da score bajo en el retrieval (como AAPL antes de tener su propio documento:
+   0.52 tangencial → 0.63 con el documento real) — señal directa de que falta research.
+
+Es 100% manual (escribir el `.md` + `npm run ingest`), coherente con el diseño interactivo sin
+nada corriendo en segundo plano. El campo `date` en cada documento existe para ver, de un
+vistazo, qué tan viejo es. Detalle completo en `docs/como-funciona.md` del proyecto.
+
 ## Ángulo 1 — Invertir en el sector IA
 
 ### Empresas líderes (consenso julio 2026)
