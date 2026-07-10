@@ -8,52 +8,16 @@
         "type": "tabs",
         "children": [
           {
-            "id": "0681bc7de66c2d69",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Fábrica Marcos Zarzar/Motor de Precios - SAP.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Motor de Precios - SAP"
-            }
-          },
-          {
-            "id": "bae7e3daa5c74cfc",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "AppSeguros/plan_de_implementacion.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "plan_de_implementacion"
-            }
-          },
-          {
             "id": "321de820b6c5fd4e",
             "type": "leaf",
             "state": {
-              "type": "canvas",
-              "state": {
-                "file": "Mapa de Proyectos.canvas",
-                "viewState": {
-                  "x": 1050,
-                  "y": 165,
-                  "zoom": -1
-                }
-              },
-              "icon": "lucide-layout-dashboard",
-              "title": "Mapa de Proyectos"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -188,13 +152,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Mapa de Proyectos.canvas",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Esquema de Mapa de Proyectos"
+              "title": "Esquema"
             }
           },
           {
@@ -212,7 +175,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 424.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -228,43 +192,43 @@
       "obsidian42-brat:BRAT": false
     }
   },
-  "active": "deae38a11ee8690b",
+  "active": "321de820b6c5fd4e",
   "lastOpenFiles": [
+    "AppSeguros/plan_de_implementacion.md",
+    "Fábrica Marcos Zarzar/Motor de Precios - SAP.md",
+    "Temas Varios/Varios.md",
+    "Temas Varios/ProvDent-limpio-historial.md",
+    "Temas Varios/ProvDent-limpio.md",
+    "Temas Varios/ProvDent.md",
+    "Temas Varios/Protadult.md",
+    "Temas Varios/Organización del Vault.md",
+    "Temas Varios/Limpieza de Mac.md",
+    "Temas Varios/LimpiaPC.md",
     "Temas Varios/Inversiones LLM.md",
+    "Temas Varios/Crypto y Solana.md",
+    "Temas Varios/Control de Licencias de Software.md",
+    "Temas Varios/Control de Finanzas.md",
+    "Temas Varios/Busca Medicamentos.md",
+    "Temas Varios/Busca Job Agent Starte.md",
+    "Temas Varios/BTC Monitor.md",
+    "Temas Varios/Agente Mercado Libre.md",
+    "Mapa de Proyectos.canvas",
     "Diario/2026-07-09.md",
     "Mascotas.md",
-    "AppSeguros/plan_de_implementacion.md",
     "AppSeguros/revision_codigo_2026-07-08.md",
     "AppSeguros/CHANGELOG.md",
     "Detalle Tareas.md",
     "AppSeguros",
-    "Mapa de Proyectos.canvas",
     "Proyectos.base",
     "VP Services and Consulting SPA/Polizas Web.md",
     "Fábrica Marcos Zarzar/SAP Business One.md",
-    "Fábrica Marcos Zarzar/Motor de Precios - SAP.md",
     "Fábrica Marcos Zarzar/Marcos - Diego.md",
-    "Fábrica Marcos Zarzar/Fábrica Precios.md",
-    "Fábrica Marcos Zarzar/Bot - Mercado Libre.md",
-    "Diario/2026-07-08.md",
-    "Fábrica Marcos Zarzar/Web Scrapping.md",
-    "Temas Varios/Agente Mercado Libre.md",
-    "Temas Varios/Crypto y Solana.md",
     "Temas Varios/Agente Mercado Libre.md.tmp.1405.cae1aef2c2a2",
     "VP Services and Consulting SPA/Página Web.md.tmp.1405.8d89a0857718",
-    "Temas Varios/Organización del Vault.md",
-    "Temas Varios/Limpieza de Mac.md",
-    "Temas Varios/LimpiaPC.md",
-    "Temas Varios/Control de Finanzas.md",
     "Temas Varios/Control de Finanzas.md.tmp.724.3ef2389831a3",
-    "Temas Varios/Protadult.md",
-    "Temas Varios/ProvDent-limpio-historial.md",
-    "Temas Varios/ProvDent-limpio.md",
-    "Temas Varios/ProvDent.md",
     "Proyectos.base.tmp.724.bf1c4c2341f6",
     "Temas Varios/Busca Job Agent Starte.md.tmp.724.b3801f03f457",
     "VP Services and Consulting SPA/Busca Medicamentos Web.md.tmp.724.27dda2b0d0c5",
-    "VP Services and Consulting SPA/Busca Medicamentos Web.md",
     "Temas Varios/Busca Medicamentos.md.tmp.724.8618ceddaed9",
     "Temas Varios/Busca Medicamentos.md.tmp.724.313db7cafb57"
   ]
