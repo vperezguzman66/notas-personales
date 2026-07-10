@@ -5,7 +5,17 @@ Apuntes personales sobre el mundo de las inversiones ligadas a IA/LLM. Dos ángu
 1. **Invertir EN el sector IA/LLM** — comprar acciones/ETFs de empresas que fabrican o explotan esta tecnología.
 2. **Usar LLMs COMO herramienta** para investigar, analizar y apoyar decisiones de inversión (en cualquier sector, no solo IA).
 
-Estado (actualizado 2026-07-10): sin fondos para invertir y sin intención de invertir por ahora — el **Ángulo 1 queda en pausa**. El foco actual es 100% el **Ángulo 2**: construir la herramienta. Esta nota documenta el diseño; el código vive en `Proyectos/inversiones-llm/` (fuera de este vault), con su propio `CLAUDE.md`, y en GitHub (privado): [github.com/vperezguzman66/inversiones-llm](https://github.com/vperezguzman66/inversiones-llm). Scaffolding inicial (chunking + embeddings + SQLite + ingest/retrieve, 11 tests) ya commiteado y pusheado.
+Estado (actualizado 2026-07-10): sin fondos para invertir y sin intención de invertir por ahora — el **Ángulo 1 queda en pausa**. El foco actual es 100% el **Ángulo 2**: construir la herramienta. Esta nota documenta el diseño; el código vive en `Proyectos/inversiones-llm/` (fuera de este vault), con su propio `CLAUDE.md` y `README.md`, y en GitHub (privado): [github.com/vperezguzman66/inversiones-llm](https://github.com/vperezguzman66/inversiones-llm).
+
+**Progreso del código (al 2026-07-10):**
+- RAG funcionando de punta a punta: `chunk.js`, `embeddings.js` (Voyage AI), `db.js` (SQLite), `ingest.js`, `retrieve.js`.
+- Esquema de "propuesta de orden" implementado y probado: `propose` → `proposals` → `decide`, auditable.
+- Corpus con 10 documentos reales: Nvidia, Microsoft, Alphabet, AMD, Broadcom/TSM, Meta, Amazon/Trainium, comparación de ETFs de IA, y dos riesgos transversales documentados aparte (financiamiento circular Nvidia/OpenAI/Oracle/Broadcom ~$800B, restricción energética de centros de datos) — todos con research de julio 2026, frontmatter `doc_type`/`ticker`/`date`.
+- Dos bugs reales encontrados y corregidos al correr el ingest completo: `embeddings.js` no toleraba el rate limit de Voyage AI (3 RPM sin método de pago agregado — ahora reintenta automáticamente); `ingest.js` no era idempotente (reprocesar un archivo duplicaba sus chunks — ahora los reemplaza).
+- 19 tests pasando. Sin capa de ejecución todavía (deliberado).
+- **Skill `/analizar-inversion <ticker>`** (`.claude/skills/`) que encadena todo el flujo: retrieval del RAG → datos vivos de TradingView MCP → síntesis → propuesta → guardar pending → esperar aprobación → registrar decisión.
+- **Flujo completo verificado con datos reales (2026-07-10):** análisis de NVDA combinando 5 chunks del RAG (riesgos de TSM, competencia AMD/TPU) con datos vivos de TradingView (precio $210.01, RSI 68.90 cerca de sobrecompra tras un rebote, EMA 204.43, rango de 100 barras -2.71% — tendencia de mediano plazo aún negativa pese al rebote). Propuesta "mantener" guardada, mostrada, y **aprobada explícitamente** con nota. El circuito completo (RAG + datos vivos + propuesta + aprobación humana + auditoría) funciona de punta a punta.
+- **Dashboard web local** (`npm run web`, `http://127.0.0.1:4100`, solo local — nunca expuesto a la red): pestañas de propuestas pendientes (aprobar/rechazar con botones), decididas, corpus indexado, y búsqueda semántica. Requirió un refactor previo (lógica de retrieval y propuestas movida a `search.js`/`proposals-store.js`, reutilizada por CLI y web). Deliberadamente **sin botón de "analizar"** — eso exigiría una API key propia de Anthropic y el MCP de TradingView no es alcanzable desde un servidor web normal; el análisis sigue siendo exclusivo del skill dentro de Claude Code. Probado en el navegador de punta a punta, incluyendo aprobar una propuesta real con un click.
 
 ## Ángulo 1 — Invertir en el sector IA
 
@@ -137,11 +147,24 @@ Esa estructura es lo que reviso y apruebo o rechazo — nunca una recomendación
 
 **Auditoría de decisiones.** Cada propuesta y cada aprobación/rechazo debe quedar en un log — mismo patrón que `audit_log` en [Ferreteria](../../../Ferreteria). No es por cumplimiento regulatorio (esto es una herramienta personal, no un producto para terceros); es para poder revisar después si el razonamiento de la IA era bueno, y detectar sesgos o errores recurrentes antes de confiarle capital real.
 
-**Esqueleto de implementación (agente de decisión):**
-- [ ] Definir el esquema fijo de la "propuesta de orden" (los 6 campos de arriba) como salida estructurada de Claude (no texto libre).
-- [ ] Construir el store de propuestas + aprobaciones/rechazos (auditable), separado del vector store del RAG.
+**Esqueleto de implementación (agente de decisión) — completado:**
+- [x] Definir el esquema fijo de la "propuesta de orden" como salida estructurada (no texto libre) — implementado en `src/proposal-schema.js`.
+- [x] Construir el store de propuestas + aprobaciones/rechazos (auditable), separado del vector store del RAG — tabla `proposals` en la misma SQLite, con `status`, `decision_note`, `decided_at`.
 - [ ] Correr en modo simulación durante un tiempo — sin bróker conectado — y revisar periódicamente si las propuestas tenían sentido.
 - [ ] Solo cuando exista capital real: diseñar la capa de ejecución como su propio proyecto (elección de bróker, seguridad de credenciales, permisos).
+
+**Esquema final de la propuesta** (validado en código, ver `CLAUDE.md` del proyecto para el detalle):
+
+| Campo | Regla |
+|---|---|
+| `ticker` | obligatorio |
+| `action` | `comprar` / `vender` / `mantener` |
+| `quantity`, `limit_price` | obligatorios y > 0 si se compra/vende; se ignoran si es mantener |
+| `reasoning` | obligatorio, debe citar qué lo sustenta |
+| `invalidation` | obligatorio, condición que invalida la tesis |
+| `sources` | ids de chunks del RAG citados, para trazabilidad |
+
+Flujo verificado de punta a punta con datos reales: `npm run propose` (guarda con status `pending`) → `npm run proposals -- pending` (revisar) → `npm run decide -- <id> approved "nota"` (queda auditado, con timestamp; no se puede redecidir una propuesta ya cerrada).
 
 ### Infraestructura y herramientas de desarrollo
 
