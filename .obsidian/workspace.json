@@ -11,14 +11,10 @@
             "id": "321de820b6c5fd4e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Temas Varios/Inversiones LLM.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Inversiones LLM"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
             }
           }
         ]
@@ -179,8 +175,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 424.5,
-    "collapsed": true
+    "width": 424.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -196,8 +191,12 @@
       "obsidian42-brat:BRAT": false
     }
   },
-  "active": "321de820b6c5fd4e",
+  "active": "deae38a11ee8690b",
   "lastOpenFiles": [
+    "VP Services and Consulting SPA/Consulta Patente Web.md",
+    "VP Services and Consulting SPA/Hosting Gestionado.md",
+    "Temas Varios/Inversiones LLM.md",
+    "Diario/2026-07-12.md",
     "AppSeguros/plan_de_implementacion.md",
     "Fábrica Marcos Zarzar/Motor de Precios - SAP.md",
     "Temas Varios/Varios.md",
@@ -208,7 +207,6 @@
     "Temas Varios/Organización del Vault.md",
     "Temas Varios/Limpieza de Mac.md",
     "Temas Varios/LimpiaPC.md",
-    "Temas Varios/Inversiones LLM.md",
     "Temas Varios/Crypto y Solana.md",
     "Temas Varios/Control de Licencias de Software.md",
     "Temas Varios/Control de Finanzas.md",
@@ -224,9 +222,6 @@
     "Detalle Tareas.md",
     "AppSeguros",
     "Proyectos.base",
-    "VP Services and Consulting SPA/Polizas Web.md",
-    "Fábrica Marcos Zarzar/SAP Business One.md",
-    "Fábrica Marcos Zarzar/Marcos - Diego.md",
     "Temas Varios/Agente Mercado Libre.md.tmp.1405.cae1aef2c2a2",
     "VP Services and Consulting SPA/Página Web.md.tmp.1405.8d89a0857718",
     "Temas Varios/Control de Finanzas.md.tmp.724.3ef2389831a3",
