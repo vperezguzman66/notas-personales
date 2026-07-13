@@ -175,7 +175,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 424.5
+    "width": 200,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -191,7 +192,7 @@
       "obsidian42-brat:BRAT": false
     }
   },
-  "active": "deae38a11ee8690b",
+  "active": "321de820b6c5fd4e",
   "lastOpenFiles": [
     "VP Services and Consulting SPA/Consulta Patente Web.md",
     "VP Services and Consulting SPA/Hosting Gestionado.md",
