@@ -3,21 +3,31 @@ proyecto: "vpservices-web"
 ruta: "Proyectos/vpservices-web"
 cliente: "VP Services (propio)"
 stack: "Cloudflare Workers + D1"
-estado: "Desplegado — SEO en curso, 1 de 4 páginas de servicio ya indexada"
-ultimo_cambio: 2026-07-04
+estado: "Desplegado — SEO en curso, 2 de 4 páginas de servicio ya indexadas, chequeo diario automático activo"
+ultimo_cambio: 2026-07-13
 ---
 
 Landing corporativa + formulario de contacto en Cloudflare Workers, con backend robusto, trazabilidad de leads y hardening de seguridad en producción.
 
 [[Página Web]]
 
-## Estado y pendientes (2026-07-04)
+## Estado y pendientes (2026-07-13)
+
+Revisión de indexación retomada tras el recordatorio pendiente del 11 de julio. Detalle completo en la sección "Google Search Console" más abajo; resumen:
+
+- Diagnóstico exacto (vía API real, no heurística `site:`): `soporte-y-mantenimiento` e `inteligencia-artificial` en **"Discovered - currently not indexed"** (Google las descubrió pero pospuso el rastreo por presupuesto de crawl); `desarrollo-de-software` en **"URL is unknown to Google"** (ni siquiera en cola de descubrimiento) — la más rezagada de las 3.
+- El refresh token OAuth (revocado el 4 de julio a propósito) fue **regenerado**: el cliente OAuth original era tipo "Desktop" y esa clase de cliente no admite redirect URIs personalizados en la consola actual de Google Cloud — se creó un segundo cliente tipo "Web application" solo para esto.
+- La rutina en la nube quedó **recurrente y unificada**: corre a diario (10:00 UTC) sobre las 3 páginas rezagadas, llama la API real de Search Console, y manda push individual por cada página a medida que se confirma indexada, autodesactivándose cuando las 3 estén listas.
+
+**Ya no hay pendiente manual** — el seguimiento quedó automatizado con esta rutina; el próximo evento esperado es un push cuando alguna de las 3 páginas pase a "Submitted and indexed".
+
+## Estado y pendientes (2026-07-04) — histórico
 
 Todo el trabajo hasta el PR #66 (`fix(diseño): equilibra contacto y diversifica acentos de color`) está mergeado a `main` y pusheado a `origin/main` — sin cambios locales pendientes de subir.
 
 Las tres rutinas programadas para hoy (2026-07-04) ya se ejecutaron — resultados y detalle completo en la sección "Google Search Console" más abajo. Resumen: 1 de 4 páginas nuevas ya indexada, 2 en cola normal de descubrimiento, 1 (`soporte-y-mantenimiento`) aún no descubierta por Google. El OAuth temporal quedó revocado y confirmado muerto.
 
-**Pendiente — 2026-07-11:** rutina de recordatorio (`trig_016zg6z5kvRiMKuLs9U1JYpb`) para revisar manualmente si `soporte-y-mantenimiento` ya fue descubierta/indexada (ver detalle abajo).
+~~**Pendiente — 2026-07-11:** rutina de recordatorio (`trig_016zg6z5kvRiMKuLs9U1JYpb`) para revisar manualmente si `soporte-y-mantenimiento` ya fue descubierta/indexada (ver detalle abajo).~~ Resuelto el 2026-07-13 (ver sección de arriba).
 
 ## Estado final implementado (2026-06)
 
@@ -561,6 +571,26 @@ Se creó una rutina one-shot (`trig_016zg6z5kvRiMKuLs9U1JYpb`, 2026-07-11 10:00 
 **Por qué es manual y no vía API:** al intentar generar credenciales OAuth nuevas para automatizar este recheck (usando el mismo client_id del proyecto `vpservices-search-console` vía OAuth Playground), Google rechazó la autorización con **Error 400: redirect_uri_mismatch** — el OAuth Client no tiene registrado `https://developers.google.com/oauthplayground` como redirect URI válido (el refresh_token original de esta app se generó por otra vía, no por el Playground).
 
 Para automatizar el próximo chequeo por API haría falta: entrar a <https://console.cloud.google.com/apis/credentials?project=firm-streamer-501200-f5>, abrir el OAuth Client existente y agregar `https://developers.google.com/oauthplayground` como Authorized redirect URI — luego se puede regenerar un refresh_token vía el Playground con scope `webmasters.readonly`, y crear una rutina calcada a la del 2026-07-04. Mientras tanto, el recheck del 11 de julio queda como recordatorio manual.
+
+### Recheck manual, regeneración de OAuth y rutina diaria (2026-07-13)
+
+**Chequeo manual inicial (navegador, `site:` en Google):** con la extensión de Chrome recién conectada, se confirmó que `soporte-y-mantenimiento` seguía sin indexar (`site:vpservices-it.com/servicios/soporte-y-mantenimiento` sin resultados), y que `desarrollo-de-software` e `inteligencia-artificial` tampoco aparecían en `site:vpservices-it.com` general — las 3 páginas cargan perfecto (verificado directamente), no es un problema técnico.
+
+**Primera rutina creada:** un chequeo diario (10:00 UTC) que hacía `site:` vía WebFetch y avisaba por push al confirmar indexación, autodesactivándose. Se amplió el mismo día para cubrir las 3 páginas rezagadas en una sola rutina (`trig_01V1ZoMWQi46tpTpfnhnyZ4h`, "GSC indexing check - vpservices-it.com service pages"), usando el propio prompt de la rutina como estado persistente (listas de pendientes/confirmadas que se reescriben solas vía `RemoteTrigger update` en cada confirmación).
+
+**Regeneración del refresh token OAuth:** el usuario pidió regenerar el token para volver a tener datos precisos de la API (en vez de la heurística `site:`). Se encontró la causa exacta del error de `redirect_uri_mismatch` documentado el 4 de julio: el OAuth Client original ("Cliente de escritorio 1") es tipo **Desktop**, y ese tipo de cliente no permite agregar redirect URIs personalizados en la consola actual de Google Cloud — no fue un descuido de configuración, es una limitación del tipo de cliente. Solución: se creó un **segundo OAuth Client, tipo "Web application"** ("OAuth Playground (GSC readonly)"), en el mismo proyecto `vpservices-search-console`, con el redirect URI del Playground autorizado. Con ese cliente se generó un refresh_token nuevo, verificado contra `webmasters/v3/sites` (`sc-domain:vpservices-it.com`, permiso `siteOwner`).
+
+**Diagnóstico exacto obtenido con la API real** (`urlInspection.index:inspect`), reemplazando la inferencia por `site:`:
+
+| Página | `coverageState` real |
+|---|---|
+| `soporte-y-mantenimiento` | Discovered - currently not indexed (referida desde `desarrollo-de-software`) |
+| `inteligencia-artificial` | Discovered - currently not indexed (referida desde `sitemap.xml`) |
+| `desarrollo-de-software` | URL is unknown to Google (ni siquiera en cola de descubrimiento) |
+
+"Discovered - currently not indexed" es el estado que Google documenta como decisión deliberada de presupuesto de rastreo (pospuso el crawl para no sobrecargar el sitio) — consistente con el diagnóstico original del 1 de julio (falta de autoridad/señales externas del dominio, no un problema técnico). `desarrollo-de-software` está un paso más atrás: Google todavía no la agenda para descubrir, pese a estar enlazada desde la home y en el sitemap.
+
+**Rutina actualizada para usar la API real:** el mismo `trig_01V1ZoMWQi46tpTpfnhnyZ4h` ahora hace el refresh de access token + `urlInspection.index:inspect` (vía `curl` desde Bash) en vez de `site:`, con las credenciales (client_id, client_secret, refresh_token) embebidas en su propio prompt — mismo patrón usado el 1 de julio, ya que no hay otra forma de pasar secretos a una rutina en la nube. Sigue avisando por push página por página y autodesactivándose cuando las 3 estén en "Submitted and indexed". Detalle técnico completo en el repo: `docs/ops/gsc-indexing-check.md`.
 
 ## Productos propios publicados en la web (2026-07-01)
 
