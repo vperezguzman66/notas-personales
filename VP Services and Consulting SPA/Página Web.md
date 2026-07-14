@@ -3,7 +3,7 @@ proyecto: "vpservices-web"
 ruta: "Proyectos/vpservices-web"
 cliente: "VP Services (propio)"
 stack: "Cloudflare Workers + D1"
-estado: "Desplegado — SEO en curso, 2 de 4 páginas de servicio ya indexadas, chequeo diario automático activo"
+estado: "Desplegado — SEO en curso, 2 de 4 páginas de servicio ya indexadas, chequeo diario automático activo; Google Business Profile creado, pendiente verificación por video"
 ultimo_cambio: 2026-07-13
 ---
 
@@ -19,7 +19,17 @@ Revisión de indexación retomada tras el recordatorio pendiente del 11 de julio
 - El refresh token OAuth (revocado el 4 de julio a propósito) fue **regenerado**: el cliente OAuth original era tipo "Desktop" y esa clase de cliente no admite redirect URIs personalizados en la consola actual de Google Cloud — se creó un segundo cliente tipo "Web application" solo para esto.
 - La rutina en la nube quedó **recurrente y unificada**: corre a diario (10:00 UTC) sobre las 3 páginas rezagadas, llama la API real de Search Console, y manda push individual por cada página a medida que se confirma indexada, autodesactivándose cuando las 3 estén listas.
 
-**Ya no hay pendiente manual** — el seguimiento quedó automatizado con esta rutina; el próximo evento esperado es un push cuando alguna de las 3 páginas pase a "Submitted and indexed".
+**Ya no hay pendiente manual** de indexación — el seguimiento quedó automatizado con esta rutina; el próximo evento esperado es un push cuando alguna de las 3 páginas pase a "Submitted and indexed".
+
+### Google Business Profile creado (2026-07-13)
+
+No existía ninguno (`0 businesses` en la cuenta). Se creó desde cero: **VP Services & Consulting SpA**, categoría "Computer consultant", tipo "Service business" (sin local público visitable), área de servicio **Chile** (todo el país, por ser consultoría remota), teléfono +56 9 9319 9553, sitio `vpservices-it.com`, horario L-V 09:00-18:00.
+
+Servicios cargados: IT consulting, Programming service, Software, Web design, Data backup & recovery, Network service, Hosting and domains, más un servicio personalizado "Inteligencia Artificial" (no había chip predefinido para IA).
+
+Dirección de correspondencia usada solo para verificación (privada, no se muestra públicamente): Carlos Silva Vildosola 9013, La Reina, Región Metropolitana, CP 7860145.
+
+**Pendiente — verificación por video:** Google solo ofreció verificación por video para este perfil (no la opción de postal por correo que se esperaba). El perfil quedó creado pero marcado **"NOT PUBLICLY VISIBLE"** — no aparecerá en Maps/Search hasta grabar y subir un video mostrando el espacio de trabajo/equipo como prueba de gestión del negocio. Es una acción que solo Victor puede hacer personalmente (filmarse a sí mismo/su espacio); quedó pendiente a petición explícita suya el mismo día ("ahora no puedo, dejemoslo como pendiente"). Se puede retomar en cualquier momento desde business.google.com → "Get verified".
 
 ## Estado y pendientes (2026-07-04) — histórico
 
