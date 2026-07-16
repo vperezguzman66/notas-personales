@@ -11,10 +11,14 @@
             "id": "321de820b6c5fd4e",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Vista gráfica"
+              "type": "markdown",
+              "state": {
+                "file": "Negocios/Co-working Dental.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Co-working Dental"
             }
           }
         ]
@@ -49,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#5/",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -70,8 +74,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -193,8 +196,11 @@
       "obsidian42-brat:BRAT": false
     }
   },
-  "active": "4cabc52964ce8556",
+  "active": "321de820b6c5fd4e",
   "lastOpenFiles": [
+    "Proyectos.base",
+    "Negocios/Co-working Dental.md",
+    "Negocios",
     "Diario/2026-07-15.md",
     "VP Services and Consulting SPA/Página Web.md",
     "Diario/2026-07-14.md",
@@ -219,18 +225,14 @@
     "Temas Varios/Busca Medicamentos.md",
     "Temas Varios/Busca Job Agent Starte.md",
     "Temas Varios/BTC Monitor.md",
-    "Temas Varios/Agente Mercado Libre.md",
     "Mapa de Proyectos.canvas",
-    "Diario/2026-07-09.md",
     "AppSeguros",
-    "Proyectos.base",
     "Temas Varios/Agente Mercado Libre.md.tmp.1405.cae1aef2c2a2",
     "VP Services and Consulting SPA/Página Web.md.tmp.1405.8d89a0857718",
     "Temas Varios/Control de Finanzas.md.tmp.724.3ef2389831a3",
     "Proyectos.base.tmp.724.bf1c4c2341f6",
     "Temas Varios/Busca Job Agent Starte.md.tmp.724.b3801f03f457",
     "VP Services and Consulting SPA/Busca Medicamentos Web.md.tmp.724.27dda2b0d0c5",
-    "Temas Varios/Busca Medicamentos.md.tmp.724.8618ceddaed9",
-    "Temas Varios/Busca Medicamentos.md.tmp.724.313db7cafb57"
+    "Temas Varios/Busca Medicamentos.md.tmp.724.8618ceddaed9"
   ]
 }
