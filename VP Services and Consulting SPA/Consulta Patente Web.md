@@ -3,8 +3,8 @@ proyecto: "consulta-patente-web"
 ruta: "Proyectos/consulta-patente-web"
 cliente: "Propio"
 stack: "Cloudflare Workers + D1 + Durable Object + Turnstile + Boostr API"
-estado: "Scaffold completo, commit inicial hecho — sin desplegar (D1/Boostr/Turnstile/Workers Paid pendientes de aprovisionar)"
-ultimo_cambio: 2026-07-12
+estado: "D1 de prod y staging provisionadas y migradas; deploy de prueba hecho a staging (encontró y corrigió bug de routing en /admin). Faltan Boostr/Turnstile/ADMIN_TOKEN/Workers Paid antes del primer deploy a producción"
+ultimo_cambio: 2026-07-17
 ---
 
 [[Varios]]
@@ -64,13 +64,15 @@ Costo variable real fuera de Cloudflare: **Boostr, $50 CLP por consulta nueva no
 
 Como cada patente se cachea 30 días, el costo real depende solo de patentes *nuevas* por mes: bajo ~100/mes conviene la modalidad de créditos, sobre eso el plan Starter sale más barato. Plan recomendado para partir: **Free**, para validar demanda a costo $0 antes de comprometerse a un plan pago.
 
-## Estado (2026-07-12)
+## Estado (2026-07-17)
 
 Scaffold completo: backend, frontend (formulario + panel admin), 45 tests en verde (`node --test`, sin red, D1 mockeado con `node:sqlite`), build verificado (`esbuild` minifica y hashea `public/` → `dist/`). Frontend revisado visualmente en preview (formulario y admin renderizan bien).
 
-Commit inicial hecho en el repo git local (`feat: scaffold consulta-patente-web`), sin publicar en GitHub. Pendiente antes del primer deploy real:
-- ⏳ Crear las D1 (`wrangler d1 create`) y actualizar `database_id` en `wrangler.jsonc`.
+Desde la revisión anterior: se crearon y migraron las D1 reales de producción (`consulta-patente-db`) y staging (`consulta-patente-db-staging`) — `database_id` ya no es placeholder en `wrangler.jsonc`, y se agregó el route de producción `patente.vpservices-it.com`. Se hizo un deploy de prueba a staging, que encontró un bug real: el router reescribía `/admin` a `/admin.html`, pero Cloudflare Assets ya sirve `admin.html` directo en `/admin` (html_handling por defecto), así que la reescritura causaba un redirect 307 a sí mismo. Corregido.
+
+Commit inicial hecho en el repo git local (`feat: scaffold consulta-patente-web`), sin publicar en GitHub. Pendiente antes del primer deploy a producción:
+- ✅ ~~Crear las D1~~ — hecho, prod y staging migradas.
 - ⏳ Contratar créditos en Boostr y configurar `BOOSTR_API_KEY`.
 - ⏳ Crear sitio de Turnstile en Cloudflare y configurar sus keys.
-- ⏳ Definir `ADMIN_TOKEN` y el dominio/subdominio de producción.
+- ⏳ Definir `ADMIN_TOKEN`.
 - ⏳ Activar el plan Workers Paid (US$5/mes) en la cuenta de Cloudflare.
